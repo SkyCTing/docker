@@ -152,7 +152,7 @@ RUN set -eux; \
      make -j "$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install; \
-    make clean;
+    make clean; \
     cp -v php.ini-* "$PHP_INI_DIR/"; \
     cd /; \
     docker-php-source delete; \
