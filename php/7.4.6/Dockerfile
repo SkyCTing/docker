@@ -176,46 +176,6 @@ ENTRYPOINT ["docker-php-entrypoint"]
 
 WORKDIR /opt/case
 
-#RUN set -eux; \
-#    cd /opt/app/php/etc; \
-#    if [ -d php-fpm.d ]; then \
-#        # for some reason, upstream's php-fpm.conf.default has "include=NONE/etc/php-fpm.d/*.conf"
-#        sed 's!=NONE/!=!g' php-fpm.conf.default | tee php-fpm.conf > /dev/null; \
-#        cp php-fpm.d/www.conf.default php-fpm.d/web.conf; \
-#    else \
-#        # PHP 5.x doesn't use "include=" by default, so we'll create our own simple config that mimics PHP 7+ for consistency
-#        mkdir php-fpm.d; \
-#        cp php-fpm.conf.default php-fpm.d/www.conf; \
-#        { \
-#            echo '[global]'; \
-#            echo 'include=etc/php-fpm.d/*.conf'; \
-#        } | tee php-fpm.conf; \
-#    fi; \
-#    { \
-#        echo '[global]'; \
-#        echo 'error_log = /proc/self/fd/2'; \
-#        echo; echo '; https://github.com/docker-library/php/pull/725#issuecomment-443540114'; echo 'log_limit = 8192'; \
-#        echo; \
-#        echo '[web]'; \
-#        echo '; if we send this to /proc/self/fd/1, it never appears'; \
-#        echo 'access.log = /proc/self/fd/2'; \
-#        echo; \
-#        echo 'clear_env = no'; \
-#        echo; \
-#        echo '; Ensure worker stdout and stderr are sent to the main error log.'; \
-#        echo 'catch_workers_output = yes'; \
-#        echo 'decorate_workers_output = no'; \
-#    } | tee php-fpm.d/docker.conf; \
-#    { \
-#        echo '[global]'; \
-#        echo 'daemonize = no'; \
-#        echo; \
-#        echo '[www]'; \
-#        echo 'listen = 9000'; \
-#    } | tee php-fpm.d/zz-docker.conf
-COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
-COPY etc/*.ini "$PHP_INI_DIR/"
-
 RUN set -eux; \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
@@ -248,7 +208,27 @@ RUN set -eux; \
     docker-php-ext-enable xdebug;\
     apk del --no-network .build-deps;
 
+RUN apk add --virtual .timezone tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && apk del --no-network .timezone;
+
+RUN set -eux; \
+    cd /opt/app/php/etc; \
+    if [ -d php-fpm.d ]; then \
+        sed 's!=NONE/!=!g' php-fpm.conf.default | tee php-fpm.conf > /dev/null; \
+    else \
+        # PHP 5.x doesn't use "include=" by default, so we'll create our own simple config that mimics PHP 7+ for consistency
+        mkdir php-fpm.d; \
+        { \
+            echo '[global]'; \
+            echo 'include=etc/php-fpm.d/*.conf'; \
+        } | tee php-fpm.conf; \
+    fi;
+
+COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
+COPY etc/*.ini "$PHP_INI_DIR/"
+
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["/opt/app/php/sbin/php-fpm"]
+CMD ["/opt/app/php/sbin/php-fpm --daemonize"]
