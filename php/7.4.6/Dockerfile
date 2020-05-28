@@ -42,8 +42,11 @@ RUN set -eux; \
     mkdir -p "$PHP_INI_DIR/conf.d"; \
     [ ! -d /opt/case ]; \
     mkdir -p /opt/case; \
+    mkdir -p /opt/logs/php;\
     chown httpd:httpd /opt/case; \
-    chmod 777 /opt/case
+    chown httpd:httpd /opt/logs/php; \
+    chmod 777 /opt/case; \
+    chmod 777 /opt/logs
 
 ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=httpd --with-fpm-group=httpd --disable-cgi
 
@@ -60,7 +63,6 @@ ENV PHP_SHA256="d740322f84f63019622b9f369d64ea5ab676547d2bdcf12be77a5a4cffd06832
 RUN set -eux; \
     \
     apk add --no-cache --virtual .fetch-deps gnupg; \
-    \
     mkdir -p /opt/src; \
     cd /opt/src; \
     \
@@ -86,7 +88,7 @@ RUN set -eux; \
     \
     apk del --no-network .fetch-deps
 
-COPY docker-php-source /usr/local/bin/
+COPY docker-php* /usr/local/bin/
 
 RUN set -eux; \
     apk add --no-cache --virtual .build-deps \
@@ -170,8 +172,6 @@ RUN set -eux; \
 # smoke test
     /opt/app/php/bin/php --version
 
-COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
-
 ENTRYPOINT ["docker-php-entrypoint"]
 
 WORKDIR /opt/case
@@ -213,42 +213,57 @@ RUN set -eux; \
         echo '[www]'; \
         echo 'listen = 9000'; \
     } | tee php-fpm.d/zz-docker.conf
-COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
-COPY etc/*.ini "$PHP_INI_DIR/"
+#COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
+#COPY etc/*.ini "$PHP_INI_DIR/"
 
-RUN set -eux; \
-    apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-        argon2-dev \
-        coreutils \
-        curl-dev \
-        libedit-dev \
-        libsodium-dev \
-        libxml2-dev \
-        linux-headers \
-        oniguruma-dev \
-        openssl-dev \
-        sqlite-dev \
-    ; \
-    docker-php-ext-enable sodium; \
-## Redis extension
-    /opt/app/php/bin/pecl install redis; \
-    docker-php-ext-enable redis; \
-## Mongodb extension
-    /opt/app/php/bin/pecl install mongodb; \
-    docker-php-ext-enable mongodb; \
-## Seaslog
-    /opt/app/php/bin/pecl install seaslog; \
-    docker-php-ext-enable seaslog; \
-## apcu
-    /opt/app/php/bin/pecl install apcu; \
-    docker-php-ext-enable apcu; \
-## xdebug
-    /opt/app/php/bin/pecl install xdebug; \
-    docker-php-ext-enable xdebug;\
-    apk del --no-network .build-deps;
+#RUN set -eux; \
+#    apk add --no-cache --virtual .build-deps \
+#        $PHPIZE_DEPS \
+#        argon2-dev \
+#        coreutils \
+#        curl-dev \
+#        libedit-dev \
+#        libsodium-dev \
+#        libxml2-dev \
+#        linux-headers \
+#        oniguruma-dev \
+#        openssl-dev \
+#        sqlite-dev \
+#    ; \
+#    docker-php-ext-enable sodium; \
+### Redis extension
+#    /opt/app/php/bin/pecl install redis; \
+#    docker-php-ext-enable redis; \
+### Mongodb extension
+#    /opt/app/php/bin/pecl install mongodb; \
+#    docker-php-ext-enable mongodb; \
+### Seaslog
+#    /opt/app/php/bin/pecl install seaslog; \
+#    docker-php-ext-enable seaslog; \
+### apcu
+#    /opt/app/php/bin/pecl install apcu; \
+#    docker-php-ext-enable apcu; \
+### xdebug
+#    /opt/app/php/bin/pecl install xdebug; \
+#    docker-php-ext-enable xdebug;\
+#    apk del --no-network .build-deps;
 
-STOPSIGNAL SIGQUIT
+#RUN set -eux; \
+#    apk add --no-cache --virtual .build-deps \
+#        $PHPIZE_DEPS \
+#        argon2-dev \
+#        coreutils \
+#        curl-dev \
+#        libedit-dev \
+#        libsodium-dev \
+#        libxml2-dev \
+#        linux-headers \
+#        oniguruma-dev \
+#        openssl-dev \
+#        sqlite-dev \
+#    ;
+#RUN mkdir -p /opt/logs/php;
+#STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
 CMD ["/opt/app/php/sbin/php-fpm"]

@@ -17,32 +17,30 @@ services:
 #    links:
 #    - php
 #
-#  php:
-#    image: repo-docker.2345.com:8088/starnews.2345.com/php:7.2.11
-#    container_name: starnews_php
-#    restart: always
-#    volumes:
-#    - /opt/case:/opt/case
-#    # - /opt/app/starnews/php/etc/php-fpm.conf:/opt/app/php7/etc/php-fpm.conf
-#    # - /opt/app/starnews/php/etc/php.ini:/opt/app/php7/etc/php.ini
-#    # - /opt/app/starnews/php/etc/cron.ini:/opt/app/php7/etc/cron.ini
-#    - /opt/app/starnews/php/logs/:/opt/logs/php7/
-#    extra_hosts:
-#    - "passport.2345.com:172.17.18.185"
-#    - "login.2345.com:172.17.18.185"
-#    - "houtai.2345.com:172.17.12.70"
-#    - "test.dsp.union2.50bang.org:172.16.0.110"
-#    - "test.bumblebee.2345.cn:172.17.18.169"
-#    - "xq.2345.com:172.17.12.70"
-#    - "imgwx1.2345.com:172.17.12.70"
-#    - "newsapp.2345.com:172.17.12.47"
-#    - "xhgui.web.2345.cn:172.17.12.70"
-#    - "www.adintercept.com:172.17.18.116"
-#    - "starnews.2345.com:172.17.12.70"
-#    networks:
-#      mywebnet:
-#        ipv4_address: 10.11.0.3
-#
+  php:
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/php:7.4.6
+    container_name: php
+    restart: always
+    volumes:
+      - D:\Develop\php\etc\php.ini:/opt/app/php/etc/php.ini
+      - D:\Develop\php\etc\cron.ini:/opt/app/php/etc/cron.ini
+      - D:\Develop\php\logs\:/opt/logs/php/
+      - D:\SourceCode:/opt/case:rw
+    extra_hosts:
+    - "passport.2345.com:172.17.18.185"
+    - "login.2345.com:172.17.18.185"
+    - "houtai.2345.com:172.17.12.70"
+    - "test.dsp.union2.50bang.org:172.16.0.110"
+    - "test.bumblebee.2345.cn:172.17.18.169"
+    - "xq.2345.com:172.17.12.70"
+    - "imgwx1.2345.com:172.17.12.70"
+    - "newsapp.2345.com:172.17.12.47"
+    - "xhgui.web.2345.cn:172.17.12.70"
+    - "www.adintercept.com:172.17.18.116"
+    - "starnews.2345.com:172.17.12.70"
+    networks:
+      - default
+
 #  mysql:
 #   image: repo-docker.2345.com:8088/starnews.2345.com/mysql:5.7.23
 #   restart: always
@@ -67,9 +65,9 @@ services:
     ports:
     - "6379:6379"
     volumes:
-#     - /opt/app/starnews/redis/logs/:/opt/app/redis/logs/
+#     - /opt/logs/redis/:/opt/logs/redis/
      - D:\Develop\redis\logs\:/opt/app/redis/logs/
-#     - /opt/app/starnews/redis/db/:/opt/app/redis/db/
+#     - /opt/app/redis/db/:/opt/app/redis/db/
      - D:\Develop\redis\db\:/opt/app/redis/db/
     networks:
       - default
