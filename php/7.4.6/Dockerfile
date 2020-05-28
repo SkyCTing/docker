@@ -232,4 +232,4 @@ COPY etc/*.ini "$PHP_INI_DIR/"
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["/opt/app/php/sbin/php-fpm", "--daemonize"]
+CMD ["/opt/app/php/sbin/php-fpm", "-F"]
