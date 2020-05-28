@@ -208,9 +208,10 @@ RUN set -eux; \
     docker-php-ext-enable xdebug;\
     apk del --no-network .build-deps;
 
-RUN apk add --virtual .timezone tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
-    && apk del --no-network .timezone;
+RUN apk add --virtual .timezone tzdata; \
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime; \
+    echo "Asia/Shanghai" > /etc/timezone; \
+    apk del --no-network .timezone;
 
 RUN set -eux; \
     cd /opt/app/php/etc; \
@@ -231,4 +232,4 @@ COPY etc/*.ini "$PHP_INI_DIR/"
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["/opt/app/php/sbin/php-fpm --daemonize"]
+CMD ["/opt/app/php/sbin/php-fpm", "--daemonize"]
