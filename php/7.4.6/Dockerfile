@@ -104,8 +104,8 @@ RUN set -eux; \
     ; \
     export CFLAGS="$PHP_CFLAGS" \
         CPPFLAGS="$PHP_CPPFLAGS" \
-        LDFLAGS="$PHP_LDFLAGS";
-RUN docker-php-source extract; \
+        LDFLAGS="$PHP_LDFLAGS"; \
+    docker-php-source extract; \
     cd /opt/src/php; \
     gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
     ./configure \
@@ -153,7 +153,7 @@ RUN docker-php-source extract; \
     find -type f -name '*.a' -delete; \
     make install; \
     make clean;
-RUN cp -v php.ini-* "$PHP_INI_DIR/"; \
+    cp -v php.ini-* "$PHP_INI_DIR/"; \
     cd /; \
     docker-php-source delete; \
     \
@@ -170,10 +170,7 @@ RUN cp -v php.ini-* "$PHP_INI_DIR/"; \
 # smoke test
     /opt/app/php/bin/php --version
 
-COPY etc/*.ini "$PHP_INI_DIR/"
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
-
-RUN docker-php-ext-enable sodium
 
 ENTRYPOINT ["docker-php-entrypoint"]
 
@@ -217,6 +214,40 @@ RUN set -eux; \
         echo 'listen = 9000'; \
     } | tee php-fpm.d/zz-docker.conf
 COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
+COPY etc/*.ini "$PHP_INI_DIR/"
+
+RUN set -eux; \
+    apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        argon2-dev \
+        coreutils \
+        curl-dev \
+        libedit-dev \
+        libsodium-dev \
+        libxml2-dev \
+        linux-headers \
+        oniguruma-dev \
+        openssl-dev \
+        sqlite-dev \
+    ; \
+    docker-php-ext-enable sodium; \
+## Redis extension
+    /opt/app/php/bin/pecl install redis; \
+    docker-php-ext-enable redis; \
+## Mongodb extension
+    /opt/app/php/bin/pecl install mongodb; \
+    docker-php-ext-enable mongodb; \
+## Seaslog
+    /opt/app/php/bin/pecl install seaslog; \
+    docker-php-ext-enable seaslog; \
+## apcu
+    /opt/app/php/bin/pecl install apcu; \
+    docker-php-ext-enable apcu; \
+## xdebug
+    /opt/app/php/bin/pecl install xdebug; \
+    docker-php-ext-enable xdebug;\
+    apk del --no-network .build-deps;
+
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
