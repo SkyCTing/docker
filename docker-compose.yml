@@ -1,21 +1,27 @@
 version: '3'
 services:
-#  nginx:
-#    image: repo-docker.2345.com:8088/starnews.2345.com/nginx:1.12.2
-#    container_name: starnews_nginx
-#    restart: always
-#    ports:
-#    - "8083:80"
-#    volumes:
-#    - /opt/case/:/opt/case
-#    - /opt/app/starnews/nginx/logs:/opt/app/nginx/logs
-#    # - /opt/app/starnews/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
-#    # - /opt/app/starnews/nginx/conf/sites:/opt/app/nginx/conf/sites
-#    networks:
-#      mywebnet:
-#        ipv4_address: 10.11.0.2
-#    links:
-#    - php
+  nginx:
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/nginx:1.18.0
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - D:\SourceCode:/opt/case:rw
+#      - D:\Develop\nginx\conf\:/opt/app/nginx/conf/
+      - D:\Develop\nginx\conf\nginx.conf:/opt/app/nginx/conf/nginx.conf
+      - D:\Develop\nginx\conf\conf.d\:/opt/app/nginx/conf/conf.d
+      - D:\Develop\nginx\conf\cert\:/opt/app/nginx/conf/cert/
+      - D:\Develop\nginx\logs\:/opt/logs/php/
+#      - /opt/case/:/opt/case
+#      - /opt/app/nginx/logs:/opt/app/nginx/logs
+#      - /opt/app/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
+#      - /opt/app/nginx/conf/sites:/opt/app/nginx/conf/sites
+    networks:
+      - default
+    links:
+      - php
 #
   php:
     image: registry.cn-hangzhou.aliyuncs.com/skyting/php:7.4.6
