@@ -149,21 +149,15 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8; \
     apk del .gettext; \
     mv /tmp/envsubst /usr/local/bin/;
 
-#COPY conf/conf.d /opt/app/nginx/conf/sites/starnews.conf
-#COPY conf/nginx.conf /opt/app/nginx/conf/nginx.conf
-#COPY conf/proxy.lua /opt/app/nginx/conf/proxy.lua
-#COPY conf/redis-cli /opt/app/nginx/conf/redis-cli
-#RUN chmod 777 /opt/app/nginx/conf/redis-cli && \
-#    chmod -R 777 /opt/app/nginx/conf/proxy.lua && \
-#    mkdir -p /opt/app/nginx/logs/ && \
-#    chmod -R 777 /opt/app/nginx/logs/
-#
-#
-#COPY conf /opt/app/nginx/conf/sites/starnews.conf
-#COPY conf /opt/app/nginx/conf/nginx.conf
-#RUN mkdir -p /opt/app/nginx/conf/ssl
-#COPY ssl /opt/app/nginx/conf/ssl/starnews.crt
-#COPY ssl /opt/app/nginx/conf/ssl/starnews.key
+COPY conf/nginx.conf /opt/app/nginx/conf/nginx.conf
+COPY conf/conf.d/*.conf /opt/app/nginx/conf/conf.d/
+COPY conf/proxy.lua /opt/app/nginx/conf/proxy.lua
+COPY conf/redis-cli /opt/app/nginx/conf/redis-cli
+RUN chmod 777 /opt/app/nginx/conf/redis-cli; \
+    chmod -R 777 /opt/app/nginx/conf/proxy.lua; \
+    chmod -R 777 /opt/logs/nginx/; \
+    mkdir -p /opt/app/nginx/conf/cert;
+COPY conf/cert/* /opt/app/nginx/conf/cert/
 
 WORKDIR /opt/case
 
@@ -171,5 +165,4 @@ EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 
-# 启动nginx命令
 CMD ["/opt/app/nginx/sbin/nginx", "-g", "daemon off;"]
