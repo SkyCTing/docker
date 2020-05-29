@@ -149,15 +149,14 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8; \
     apk del .build-deps; \
     apk del .gettext; \
     mv /tmp/envsubst /usr/local/bin/;
+RUN chmod 777 /opt/app/nginx/conf/redis-cli; \
+    chmod -R 777 /opt/app/nginx/conf/proxy.lua; \
+    chmod -R 777 /opt/logs/nginx/;
 
 COPY conf/nginx.conf /opt/app/nginx/conf/nginx.conf
 COPY conf/conf.d/*.conf /opt/app/nginx/conf/conf.d/
 COPY conf/proxy.lua /opt/app/nginx/conf/proxy.lua
 COPY conf/redis-cli /opt/app/nginx/conf/redis-cli
-RUN chmod 777 /opt/app/nginx/conf/redis-cli; \
-    chmod -R 777 /opt/app/nginx/conf/proxy.lua; \
-    chmod -R 777 /opt/logs/nginx/;
-
 COPY conf/cert/* /opt/app/nginx/conf/cert/
 
 WORKDIR /opt/case
