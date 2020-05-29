@@ -20,7 +20,9 @@ RUN apk add --virtual .timezone tzdata; \
     mkdir -p /opt/src; \
     mkdir -p /opt/app/nginx/cache/client_temp; \
     mkdir -p /opt/app/nginx/conf/conf.d; \
-    mkdir -p /opt/case;
+    mkdir -p /opt/case; \
+    mkdir -p /opt/logs/nginx; \
+    mkdir -p /opt/app/nginx/var;
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8; \
     apk add --no-cache --virtual .build-deps \
@@ -136,18 +138,17 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8; \
     mv /usr/bin/envsubst /tmp/; \
     \
     runDeps="$( \
-        scanelf --needed --nobanner /usr/sbin/nginx /usr/lib/nginx/modules/*.so /tmp/envsubst \
+        scanelf --needed --nobanner /opt/app/nginx/sbin/nginx /opt/app/nginx/modules/*.so /tmp/envsubst \
             | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
             | sort -u \
             | xargs -r apk info --installed \
             | sort -u \
     )"; \
-    apk add --no-cache --virtual .nginx-rundeps $runDeps \
+    apk add --no-cache --virtual .nginx-rundeps $runDeps; \
     apk del .build-deps; \
     apk del .gettext; \
     mv /tmp/envsubst /usr/local/bin/;
 
-WORKDIR /opt/case
 #COPY conf/conf.d /opt/app/nginx/conf/sites/starnews.conf
 #COPY conf/nginx.conf /opt/app/nginx/conf/nginx.conf
 #COPY conf/proxy.lua /opt/app/nginx/conf/proxy.lua
@@ -163,6 +164,8 @@ WORKDIR /opt/case
 #RUN mkdir -p /opt/app/nginx/conf/ssl
 #COPY ssl /opt/app/nginx/conf/ssl/starnews.crt
 #COPY ssl /opt/app/nginx/conf/ssl/starnews.key
+
+WORKDIR /opt/case
 
 EXPOSE 80 443
 
