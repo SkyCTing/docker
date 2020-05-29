@@ -22,7 +22,8 @@ RUN apk add --virtual .timezone tzdata; \
     mkdir -p /opt/app/nginx/conf/conf.d; \
     mkdir -p /opt/case; \
     mkdir -p /opt/logs/nginx; \
-    mkdir -p /opt/app/nginx/var;
+    mkdir -p /opt/app/nginx/var; \
+    mkdir -p /opt/app/nginx/conf/cert;
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8; \
     apk add --no-cache --virtual .build-deps \
@@ -155,8 +156,8 @@ COPY conf/proxy.lua /opt/app/nginx/conf/proxy.lua
 COPY conf/redis-cli /opt/app/nginx/conf/redis-cli
 RUN chmod 777 /opt/app/nginx/conf/redis-cli; \
     chmod -R 777 /opt/app/nginx/conf/proxy.lua; \
-    chmod -R 777 /opt/logs/nginx/; \
-    mkdir -p /opt/app/nginx/conf/cert;
+    chmod -R 777 /opt/logs/nginx/;
+
 COPY conf/cert/* /opt/app/nginx/conf/cert/
 
 WORKDIR /opt/case
