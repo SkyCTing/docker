@@ -13,7 +13,7 @@ services:
       - D:\Develop\nginx\conf\nginx.conf:/opt/app/nginx/conf/nginx.conf
       - D:\Develop\nginx\conf\conf.d\:/opt/app/nginx/conf/conf.d
       - D:\Develop\nginx\conf\cert\:/opt/app/nginx/conf/cert/
-      - D:\Develop\nginx\logs\:/opt/logs/php/
+      - D:\Develop\nginx\logs\:/opt/logs/nginx/
 #      - /opt/case/:/opt/case
 #      - /opt/app/nginx/logs:/opt/app/nginx/logs
 #      - /opt/app/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
