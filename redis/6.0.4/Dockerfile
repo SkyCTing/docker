@@ -29,7 +29,9 @@ RUN set -eux; \
     wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL"; \
     echo "$REDIS_DOWNLOAD_SHA *redis.tar.gz" | sha256sum -c -; \
     mkdir -p /opt/src/redis; \
-    mkdir -p /opt/app/redis; \
+    mkdir -p /opt/app/redis/etc; \
+    mkdir -p /opt/app/redis/var; \
+    mkdir -p /opt/app/redis/db; \
     tar -xzf redis.tar.gz -C /opt/src/redis --strip-components=1; \
     rm redis.tar.gz; \
     \
@@ -39,10 +41,10 @@ RUN set -eux; \
     \
     export BUILD_TLS=yes; \
     make PREFIX=/opt/app/redis -C /opt/src/redis -j "$(nproc)" all; \
-    make -C /opt/src/redis install; \
+    make -C /opt/src/redis install PREFIX=/opt/app/redis; \
     \
-    serverMd5="$(md5sum /usr/local/bin/redis-server | cut -d' ' -f1)"; export serverMd5; \
-    find /usr/local/bin/redis* -maxdepth 0 \
+    serverMd5="$(md5sum /opt/app/redis/bin/redis-server | cut -d' ' -f1)"; export serverMd5; \
+    find /opt/app/redis/bin/redis* -maxdepth 0 \
         -type f -not -name redis-server \
         -exec sh -eux -c ' \
             md5="$(md5sum "$1" | cut -d" " -f1)"; \
@@ -62,15 +64,15 @@ RUN set -eux; \
     apk add --no-network --virtual .redis-rundeps $runDeps; \
     apk del --no-network .build-deps; \
     \
-    redis-cli --version; \
-    redis-server --version
+    /opt/app/redis/bin/redis-cli --version; \
+    /opt/app/redis/bin/redis-server --version
 
 RUN mkdir /data && chown httpd:httpd /data
-VOLUME /data
 WORKDIR /opt/app
 
 COPY docker-entrypoint.sh /usr/local/bin/
+COPY redis.conf /opt/app/redis/etc
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 6379
-CMD ["redis-server"]
+CMD ["/opt/app/redis/bin/redis-server","/opt/app/redis/etc/redis_6379.conf"]
