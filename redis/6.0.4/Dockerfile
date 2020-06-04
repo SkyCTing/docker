@@ -76,4 +76,4 @@ COPY redis.conf /opt/app/redis/etc
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 6379
-CMD ["/opt/app/redis/bin/redis-server","/opt/app/redis/etc/redis_6379.conf"]
+CMD ["/opt/app/redis/bin/redis-server","/opt/app/redis/etc/redis.conf"]
