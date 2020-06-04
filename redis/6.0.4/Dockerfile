@@ -67,7 +67,8 @@ RUN set -eux; \
     /opt/app/redis/bin/redis-cli --version; \
     /opt/app/redis/bin/redis-server --version
 
-RUN mkdir /data && chown httpd:httpd /data
+RUN chown httpd:httpd /opt/app/redis/db; \
+    mkdir -p /opt/logs/redis;
 WORKDIR /opt/app
 
 COPY docker-entrypoint.sh /usr/local/bin/
