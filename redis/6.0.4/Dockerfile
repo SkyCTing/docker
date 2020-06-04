@@ -29,6 +29,7 @@ RUN set -eux; \
     wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL"; \
     echo "$REDIS_DOWNLOAD_SHA *redis.tar.gz" | sha256sum -c -; \
     mkdir -p /opt/src/redis; \
+    mkdir -p /opt/app/redis; \
     tar -xzf redis.tar.gz -C /opt/src/redis --strip-components=1; \
     rm redis.tar.gz; \
     \
@@ -37,7 +38,7 @@ RUN set -eux; \
     grep -E '^ *createBoolConfig[(]"protected-mode",.*, *0 *,.*[)],$' /opt/src/redis/src/config.c; \
     \
     export BUILD_TLS=yes; \
-    make -C /opt/src/redis -j "$(nproc)" all; \
+    make PREFIX=/opt/app/redis -C /opt/src/redis -j "$(nproc)" all; \
     make -C /opt/src/redis install; \
     \
     serverMd5="$(md5sum /usr/local/bin/redis-server | cut -d' ' -f1)"; export serverMd5; \
