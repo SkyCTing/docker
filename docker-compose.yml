@@ -36,7 +36,7 @@ services:
     - "passport.2345.com:172.17.18.185"
     - "login.2345.com:172.17.18.185"
     - "houtai.2345.com:172.17.12.70"
-    - "test.dsp.union2.50bang.org:172.16.0.110"
+    - "test.dsp.union2.50bang.org:172.17.209.3"
     - "test.bumblebee.2345.cn:172.17.18.169"
     - "xq.2345.com:172.17.12.70"
     - "imgwx1.2345.com:172.17.12.70"
