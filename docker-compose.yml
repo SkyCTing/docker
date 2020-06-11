@@ -45,6 +45,7 @@ services:
     - "www.adintercept.com:172.17.18.116"
     - "starnews.2345.com:172.17.12.70"
     - "test.algessw.2345.com:172.17.0.130"
+    - "permission.2345.cn:172.17.18.33"
     networks:
       - default
 
