@@ -7,6 +7,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "9001:9001"
     volumes:
       - D:\SourceCode:/opt/case:rw
 #      - D:\Develop\nginx\conf\:/opt/app/nginx/conf/
@@ -33,19 +34,19 @@ services:
       - D:\Develop\php\logs\:/opt/logs/php/
       - D:\SourceCode:/opt/case:rw
     extra_hosts:
-    - "passport.2345.com:172.17.18.185"
-    - "login.2345.com:172.17.18.185"
-    - "houtai.2345.com:172.17.12.70"
-    - "test.dsp.union2.50bang.org:172.17.209.3"
-    - "test.bumblebee.2345.cn:172.17.18.169"
-    - "xq.2345.com:172.17.12.70"
-    - "imgwx1.2345.com:172.17.12.70"
-    - "newsapp.2345.com:172.17.12.47"
-    - "xhgui.web.2345.cn:172.17.12.70"
-    - "www.adintercept.com:172.17.18.116"
-    - "starnews.2345.com:172.17.12.70"
-    - "test.algessw.2345.com:172.17.0.130"
-    - "permission.2345.cn:172.17.18.33"
+      - "passport.2345.com:172.17.18.185"
+      - "login.2345.com:172.17.18.185"
+      - "houtai.2345.com:172.17.12.70"
+      - "test.dsp.union2.50bang.org:172.17.209.3"
+      - "test.bumblebee.2345.cn:172.17.18.169"
+      - "xq.2345.com:172.17.12.70"
+      - "imgwx1.2345.com:172.17.12.70"
+      - "newsapp.2345.com:172.17.12.47"
+      - "xhgui.web.2345.cn:172.17.12.70"
+      - "www.adintercept.com:172.17.18.116"
+      - "starnews.2345.com:172.17.12.70"
+      - "test.algessw.2345.com:172.17.0.130"
+      - "permission.2345.cn:172.17.18.33"
     networks:
       - default
 
