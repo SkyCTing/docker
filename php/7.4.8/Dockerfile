@@ -56,8 +56,8 @@ ENV PHP_LDFLAGS="-Wl,-O1 -pie"
 ENV GPG_KEYS 42670A7FE4D0441C8E4632349E4FDC074A4EF02D 5A52880781F755608BF815FC910DEB46F53EA312
 
 ENV PHP_VERSION 7.4.8
-ENV PHP_URL="https://www.php.net/distributions/php-7.4.6.tar.xz" PHP_ASC_URL="https://www.php.net/distributions/php-7.4.8.tar.xz.asc"
-ENV PHP_SHA256="d740322f84f63019622b9f369d64ea5ab676547d2bdcf12be77a5a4cffd06832" PHP_MD5=""
+ENV PHP_URL="https://www.php.net/distributions/php-7.4.8.tar.xz" PHP_ASC_URL="https://www.php.net/distributions/php-7.4.8.tar.xz.asc"
+ENV PHP_SHA256="642843890b732e8af01cb661e823ae01472af1402f211c83009c9b3abd073245" PHP_MD5=""
 
 RUN set -eux; \
     \
@@ -162,11 +162,11 @@ RUN set -eux; \
         scanelf --needed --nobanner --format '%n#p' --recursive /opt/app/php \
             | tr ',' '\n' \
             | sort -u \
-            | awk 'system("[ -e /opt/app/php/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --no-cache $runDeps; \
     apk del --no-network .build-deps; \
-    pecl update-channels; \
+    # pecl update-channels; \
     rm -rf /tmp/pear ~/.pearrc; \
 # smoke test
     php --version

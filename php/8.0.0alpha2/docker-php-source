@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-dir=/usr/src/php
+dir=/opt/src/php
 
 usage() {
 	echo "usage: $0 COMMAND"
@@ -18,7 +18,7 @@ case "$1" in
 	extract)
 		mkdir -p "$dir"
 		if [ ! -f "$dir/.docker-extracted" ]; then
-			tar -Jxf /usr/src/php.tar.xz -C "$dir" --strip-components=1
+			tar -Jxf /opt/src/php.tar.xz -C "$dir" --strip-components=1
 			touch "$dir/.docker-extracted"
 		fi
 		;;
