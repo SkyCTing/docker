@@ -226,8 +226,8 @@ RUN set -eux; \
         } | tee php-fpm.conf; \
     fi;
 
-COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
-COPY etc/*.ini "$PHP_INI_DIR/"
+COPY ../etc "$PHP_INI_DIR/php-fpm.d/"
+COPY ../etc "$PHP_INI_DIR/"
 
 STOPSIGNAL SIGQUIT
 

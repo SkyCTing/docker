@@ -1,10 +1,8 @@
 FROM alpine:3.12
 
 # set repositories
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-# dependencies required for running "phpize"
-# these get automatically installed and removed by "docker-php-ext-*" (unless they're already installed)
 ENV PHPIZE_DEPS \
         autoconf \
         dpkg-dev dpkg \
@@ -53,39 +51,13 @@ ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_
 ENV PHP_CPPFLAGS="$PHP_CFLAGS"
 ENV PHP_LDFLAGS="-Wl,-O1 -pie"
 
-ENV GPG_KEYS 42670A7FE4D0441C8E4632349E4FDC074A4EF02D 5A52880781F755608BF815FC910DEB46F53EA312
-
 ENV PHP_VERSION 7.4.8
-ENV PHP_URL="https://www.php.net/distributions/php-7.4.8.tar.xz" PHP_ASC_URL="https://www.php.net/distributions/php-7.4.8.tar.xz.asc"
-ENV PHP_SHA256="642843890b732e8af01cb661e823ae01472af1402f211c83009c9b3abd073245" PHP_MD5=""
+ENV PHP_URL="https://download.xclub.net.cn/php/php-7.4.8.tar.xz"
 
 RUN set -eux; \
-    \
-    apk add --no-cache --virtual .fetch-deps gnupg; \
     mkdir -p /opt/src; \
     cd /opt/src; \
-    \
-    curl -fsSL -o php.tar.xz "$PHP_URL"; \
-    \
-    if [ -n "$PHP_SHA256" ]; then \
-        echo "$PHP_SHA256 *php.tar.xz" | sha256sum -c -; \
-    fi; \
-    if [ -n "$PHP_MD5" ]; then \
-        echo "$PHP_MD5 *php.tar.xz" | md5sum -c -; \
-    fi; \
-    \
-    if [ -n "$PHP_ASC_URL" ]; then \
-        curl -fsSL -o php.tar.xz.asc "$PHP_ASC_URL"; \
-        export GNUPGHOME="$(mktemp -d)"; \
-        for key in $GPG_KEYS; do \
-            gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-        done; \
-        gpg --batch --verify php.tar.xz.asc php.tar.xz; \
-        gpgconf --kill all; \
-        rm -rf "$GNUPGHOME"; \
-    fi; \
-    \
-    apk del --no-network .fetch-deps
+    curl -fsSL -o php.tar.xz "$PHP_URL";
 
 COPY docker-php* /usr/local/bin/
 
@@ -129,8 +101,8 @@ RUN set -eux; \
         --with-mhash \
         --with-password-argon2 \
         --with-sodium=shared \
-        --with-pdo-sqlite \
-        --with-sqlite3 \
+        --with-pdo-sqlite=/usr \
+        --with-sqlite3=/usr \
         --with-curl \
         --with-libedit \
         --with-openssl \
@@ -159,14 +131,14 @@ RUN set -eux; \
     docker-php-source delete; \
     \
     runDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive /opt/app/php \
+        scanelf --needed --nobanner --format '%n#p' --recursive //usr/local \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --no-cache $runDeps; \
     apk del --no-network .build-deps; \
-    # pecl update-channels; \
+    pecl update-channels; \
     rm -rf /tmp/pear ~/.pearrc; \
 # smoke test
     php --version
@@ -191,19 +163,19 @@ RUN set -eux; \
     ; \
     docker-php-ext-enable sodium; \
 ## Redis extension
-    /opt/app/php/bin/pecl install redis; \
+    pecl install https://download.xclub.net.cn/pecl/redis-5.3.1.tgz; \
     docker-php-ext-enable redis; \
 ## Mongodb extension
-    /opt/app/php/bin/pecl install mongodb; \
+    pecl install https://download.xclub.net.cn/pecl/mongodb-1.7.5.tgz; \
     docker-php-ext-enable mongodb; \
 ## Seaslog
-    /opt/app/php/bin/pecl install seaslog; \
+    pecl install https://download.xclub.net.cn/pecl/SeasLog-2.1.0.tgz; \
     docker-php-ext-enable seaslog; \
 ## apcu
-    /opt/app/php/bin/pecl install apcu; \
+    pecl install https://download.xclub.net.cn/pecl/apcu-5.1.18.tgz; \
     docker-php-ext-enable apcu; \
 ## xdebug
-    /opt/app/php/bin/pecl install xdebug; \
+    pecl install https://download.xclub.net.cn/pecl/xdebug-2.9.6.tgz; \
     docker-php-ext-enable xdebug;\
     apk del --no-network .build-deps;
 
@@ -225,8 +197,8 @@ RUN set -eux; \
         } | tee php-fpm.conf; \
     fi;
 
-COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
-COPY etc/*.ini "$PHP_INI_DIR/"
+COPY ../etc "$PHP_INI_DIR/php-fpm.d/"
+COPY ../etc "$PHP_INI_DIR/"
 
 STOPSIGNAL SIGQUIT
 
