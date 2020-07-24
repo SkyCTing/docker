@@ -34,6 +34,7 @@ RUN set -eux; \
         adduser -u 2000 -D -S -G httpd httpd
 
 ENV PHP_INI_DIR /opt/app/php/etc
+ENV INSTALL_DIR=/opt/app/php/
 
 RUN set -eux; \
     mkdir -p "$PHP_INI_DIR/conf.d"; \
@@ -52,10 +53,11 @@ ENV PHP_CPPFLAGS="$PHP_CFLAGS"
 ENV PHP_LDFLAGS="-Wl,-O1 -pie"
 
 ENV PHP_VERSION 7.4.8
-ENV PHP_URL="https://download.xclub.net.cn/php/php-7.4.8.tar.xz"
+ENV PHP_URL="https://www.php.net/distributions/php-7.4.8.tar.xz"
 
 RUN set -eux; \
     mkdir -p /opt/src; \
+    mkdir -p /usr/local/sbin; \
     cd /opt/src; \
     curl -fsSL -o php.tar.xz "$PHP_URL";
 
@@ -83,6 +85,7 @@ RUN set -eux; \
     gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
     ./configure \
         --build="$gnuArch" \
+        --prefix="$INSTALL_DIR" \
         --with-config-file-path="$PHP_INI_DIR" \
         --with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
         --enable-option-checking=fatal \
@@ -125,20 +128,23 @@ RUN set -eux; \
     find -type f -name '*.a' -delete; \
     make install; \
     make clean; \
-    find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; \
-    cp -v php.ini-* "$PHP_INI_DIR/"; \
+    strip --strip-all /opt/app/php/bin/php; \
+    strip --strip-all /opt/app/php/bin/phpdbg; \
+    strip --strip-all /opt/app/php/sbin/php-fpm; \
     cd /; \
     docker-php-source delete; \
     \
     runDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive //usr/local \
+        scanelf --needed --nobanner --format '%n#p' --recursive /opt/app/php \
             | tr ',' '\n' \
             | sort -u \
-            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+            | awk 'system("[ -e /opt/app/php/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --no-cache $runDeps; \
     apk del --no-network .build-deps; \
-    pecl update-channels; \
+    ln -s /opt/app/php/bin/* /usr/local/bin/; \
+    ln -s /opt/app/php/sbin/php-fpm /usr/local/sbin/php-fpm; \
+    /opt/app/php/bin/pecl update-channels; \
     rm -rf /tmp/pear ~/.pearrc; \
 # smoke test
     php --version
@@ -163,19 +169,19 @@ RUN set -eux; \
     ; \
     docker-php-ext-enable sodium; \
 ## Redis extension
-    pecl install https://download.xclub.net.cn/pecl/redis-5.3.1.tgz; \
+    pecl install redis; \
     docker-php-ext-enable redis; \
 ## Mongodb extension
-    pecl install https://download.xclub.net.cn/pecl/mongodb-1.7.5.tgz; \
+    pecl install mongodb; \
     docker-php-ext-enable mongodb; \
 ## Seaslog
-    pecl install https://download.xclub.net.cn/pecl/SeasLog-2.1.0.tgz; \
+    pecl install seaslog; \
     docker-php-ext-enable seaslog; \
 ## apcu
-    pecl install https://download.xclub.net.cn/pecl/apcu-5.1.18.tgz; \
+    pecl install apcu; \
     docker-php-ext-enable apcu; \
 ## xdebug
-    pecl install https://download.xclub.net.cn/pecl/xdebug-2.9.6.tgz; \
+    pecl install xdebug; \
     docker-php-ext-enable xdebug;\
     apk del --no-network .build-deps;
 
@@ -197,8 +203,8 @@ RUN set -eux; \
         } | tee php-fpm.conf; \
     fi;
 
-COPY ../etc "$PHP_INI_DIR/php-fpm.d/"
-COPY ../etc "$PHP_INI_DIR/"
+COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
+COPY etc/*.ini "$PHP_INI_DIR/"
 
 STOPSIGNAL SIGQUIT
 
