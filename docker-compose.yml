@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: registry.cn-hangzhou.aliyuncs.com/skyting/nginx:1.18.0
+    image: mcskyding/nginx:1.19.1
     container_name: nginx
     restart: always
     ports:
@@ -25,7 +25,7 @@ services:
       - php
 #
   php:
-    image: skyting/php:7.4.8
+    image: mcskyding/php:7.4.8
     container_name: php
     restart: always
     volumes:
@@ -68,7 +68,7 @@ services:
 #       ipv4_address: 10.11.0.4
 
   redis:
-    image: registry.cn-hangzhou.aliyuncs.com/skyting/redis:6.0.4
+    image: mcskyding/redis:6.0.4
     restart: always
     container_name: redis
     ports:
