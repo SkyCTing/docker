@@ -167,10 +167,12 @@ RUN set -eux; \
     )"; \
     apk add --no-cache $runDeps; \
     apk del --no-network .build-deps; \
-    /opt/app/php/bin/pecl update-channels; \
+    ln -s /opt/app/php/bin/* /usr/local/bin/; \
+    ln -s /opt/app/php/sbin/php-fpm /usr/local/sbin/php-fpm; \
+    pecl update-channels; \
     rm -rf /tmp/pear ~/.pearrc; \
 # smoke test
-    /opt/app/php/bin/php --version
+    php --version
 
 ENTRYPOINT ["docker-php-entrypoint"]
 
@@ -192,19 +194,19 @@ RUN set -eux; \
     ; \
     docker-php-ext-enable sodium; \
 ## Redis extension
-    /opt/app/php/bin/pecl install redis; \
+    pecl install redis; \
     docker-php-ext-enable redis; \
 ## Mongodb extension
-    /opt/app/php/bin/pecl install mongodb; \
+    pecl install mongodb; \
     docker-php-ext-enable mongodb; \
 ## Seaslog
-    /opt/app/php/bin/pecl install seaslog; \
+    pecl install seaslog; \
     docker-php-ext-enable seaslog; \
 ## apcu
-    /opt/app/php/bin/pecl install apcu; \
+    pecl install apcu; \
     docker-php-ext-enable apcu; \
 ## xdebug
-    /opt/app/php/bin/pecl install xdebug; \
+    pecl install xdebug; \
     docker-php-ext-enable xdebug;\
     apk del --no-network .build-deps;
 
@@ -226,10 +228,10 @@ RUN set -eux; \
         } | tee php-fpm.conf; \
     fi;
 
-COPY ../etc "$PHP_INI_DIR/php-fpm.d/"
-COPY ../etc "$PHP_INI_DIR/"
+COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
+COPY etc/*.ini "$PHP_INI_DIR/"
 
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["/opt/app/php/sbin/php-fpm", "-F"]
+CMD ["php-fpm", "-F"]
