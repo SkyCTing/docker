@@ -121,7 +121,7 @@ RUN set -eux; \
         \
         ${PHP_EXTRA_CONFIGURE_ARGS:-} \
     ; \
-     make -j "$(nproc)"; \
+    make -j "$(nproc)"; \
     find -type f -name '*.a' -delete; \
     make install; \
     make clean; \
@@ -143,6 +143,7 @@ RUN set -eux; \
     ln -s /opt/app/php/sbin/php-fpm /usr/local/sbin/php-fpm; \
     /opt/app/php/bin/pecl update-channels; \
     rm -rf /tmp/pear ~/.pearrc; \
+    rm -rf /opt/src/*.tar.xz; \
 # smoke test
     php --version
 
