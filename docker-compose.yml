@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: mcskyding/nginx:1.19.1
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/nginx:1.19.1
     container_name: nginx
     restart: always
     ports:
@@ -25,7 +25,7 @@ services:
       - php
 #
   php:
-    image: mcskyding/php:7.4.8
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/php:7.4.8
     container_name: php
     restart: always
     volumes:

@@ -1,11 +1,11 @@
-FROM alpine:3.11
+FROM alpine:3.12
 
 MAINTAINER "Sky Ting"
 
 RUN addgroup -S -g 2000 httpd && adduser -S -G httpd -u 2000 httpd
 
 # set repositories
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 RUN apk add --no-cache 'su-exec>=0.2'
 
