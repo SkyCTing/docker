@@ -147,7 +147,7 @@ RUN chmod 777 /opt/app/nginx/conf/redis-cli; \
     chmod -R 777 /opt/app/nginx/conf/proxy.lua; \
     chmod -R 777 /opt/logs/nginx/;
 
-WORKDIR /opt/case
+WORKDIR /opt/app/nginx
 
 EXPOSE 80 443 9001
 

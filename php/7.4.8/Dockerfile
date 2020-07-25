@@ -149,7 +149,7 @@ RUN set -eux; \
 
 ENTRYPOINT ["docker-php-entrypoint"]
 
-WORKDIR /opt/case
+WORKDIR /opt/app/php
 
 RUN set -eux; \
     apk add --no-cache --virtual .build-deps \

@@ -68,7 +68,7 @@ services:
 #       ipv4_address: 10.11.0.4
 
   redis:
-    image: mcskyding/redis:6.0.4
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/redis:6.0.6
     restart: always
     container_name: redis
     ports:
