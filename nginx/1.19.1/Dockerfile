@@ -153,4 +153,4 @@ EXPOSE 80 443 9001
 
 STOPSIGNAL SIGTERM
 
-CMD ["/opt/app/nginx/sbin/nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
