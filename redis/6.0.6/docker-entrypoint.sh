@@ -10,7 +10,7 @@ fi
 # allow the container to be started with `--user`
 if [ "$1" = 'redis-server' -a "$(id -u)" = '0' ]; then
 	find . \! -user httpd -exec chown httpd '{}' +
-	exec gosu httpd "$0" "$@"
+	exec su-exec httpd "$0" "$@"
 fi
 
 exec "$@"

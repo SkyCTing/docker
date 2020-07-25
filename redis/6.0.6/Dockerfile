@@ -66,8 +66,10 @@ RUN set -eux; \
     redis-server --version
 
 RUN chown httpd:httpd /opt/app/redis/db; \
-    mkdir -p /opt/logs/redis;
-WORKDIR /opt/app
+    mkdir -p /opt/logs/redis; \
+    chown httpd:httpd /opt/logs/redis/;
+
+WORKDIR /opt/app/redis
 
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY redis.conf /opt/app/redis/etc
