@@ -36,13 +36,14 @@ RUN set -eux; \
         adduser -u 2000 -D -S -G httpd httpd
 
 ENV PHP_INI_DIR /opt/app/php/etc
-ENV INSTALL_DIR=/opt/app/php
+ENV INSTALL_DIR /opt/app/php
 
 RUN set -eux; \
     mkdir -p "$PHP_INI_DIR/conf.d"; \
-    [ ! -d /opt/case ]; \
     mkdir -p /opt/case; \
     mkdir -p /opt/logs/php;\
+    mkdir -p /opt/src; \
+    mkdir -p /usr/local/sbin; \
     chown httpd:httpd /opt/case; \
     chown httpd:httpd /opt/logs/php; \
     chmod 777 /opt/case; \
@@ -54,43 +55,14 @@ ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_
 ENV PHP_CPPFLAGS="$PHP_CFLAGS"
 ENV PHP_LDFLAGS="-Wl,-O1 -pie"
 
-ENV GPG_KEYS 42670A7FE4D0441C8E4632349E4FDC074A4EF02D 5A52880781F755608BF815FC910DEB46F53EA312
-
 ENV PHP_VERSION 7.4.6
-ENV PHP_URL="https://www.php.net/distributions/php-7.4.6.tar.xz" PHP_ASC_URL="https://www.php.net/distributions/php-7.4.6.tar.xz.asc"
-ENV PHP_SHA256="d740322f84f63019622b9f369d64ea5ab676547d2bdcf12be77a5a4cffd06832" PHP_MD5=""
-
-RUN set -eux; \
-    \
-    apk add --no-cache --virtual .fetch-deps gnupg; \
-    mkdir -p /opt/src; \
-    cd /opt/src; \
-    \
-    curl -fsSL -o php.tar.xz "$PHP_URL"; \
-    \
-    if [ -n "$PHP_SHA256" ]; then \
-        echo "$PHP_SHA256 *php.tar.xz" | sha256sum -c -; \
-    fi; \
-    if [ -n "$PHP_MD5" ]; then \
-        echo "$PHP_MD5 *php.tar.xz" | md5sum -c -; \
-    fi; \
-    \
-    if [ -n "$PHP_ASC_URL" ]; then \
-        curl -fsSL -o php.tar.xz.asc "$PHP_ASC_URL"; \
-        export GNUPGHOME="$(mktemp -d)"; \
-        for key in $GPG_KEYS; do \
-            gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-        done; \
-        gpg --batch --verify php.tar.xz.asc php.tar.xz; \
-        gpgconf --kill all; \
-        rm -rf "$GNUPGHOME"; \
-    fi; \
-    \
-    apk del --no-network .fetch-deps
+ENV PHP_URL="https://www.php.net/distributions/php-7.4.6.tar.xz"
 
 COPY docker-php* /usr/local/bin/
 
 RUN set -eux; \
+    cd /opt/src; \
+    curl -fsSL -o php.tar.xz "$PHP_URL"; \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         argon2-dev \
@@ -112,7 +84,7 @@ RUN set -eux; \
     gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
     ./configure \
         --build="$gnuArch" \
-        -prefix="$INSTALL_DIR" \
+        --prefix="$INSTALL_DIR" \
         --with-config-file-path="$PHP_INI_DIR" \
         --with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
         --enable-option-checking=fatal \

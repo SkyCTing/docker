@@ -34,13 +34,14 @@ RUN set -eux; \
         adduser -u 2000 -D -S -G httpd httpd
 
 ENV PHP_INI_DIR /opt/app/php/etc
-ENV INSTALL_DIR=/opt/app/php/
+ENV INSTALL_DIR /opt/app/php/
 
 RUN set -eux; \
     mkdir -p "$PHP_INI_DIR/conf.d"; \
-    [ ! -d /opt/case ]; \
     mkdir -p /opt/case; \
+    mkdir -p /opt/src; \
     mkdir -p /opt/logs/php;\
+    mkdir -p /usr/local/sbin; \
     chown httpd:httpd /opt/case; \
     chown httpd:httpd /opt/logs/php; \
     chmod 777 /opt/case; \
@@ -55,15 +56,11 @@ ENV PHP_LDFLAGS="-Wl,-O1 -pie"
 ENV PHP_VERSION 7.4.8
 ENV PHP_URL="https://www.php.net/distributions/php-7.4.8.tar.xz"
 
-RUN set -eux; \
-    mkdir -p /opt/src; \
-    mkdir -p /usr/local/sbin; \
-    cd /opt/src; \
-    curl -fsSL -o php.tar.xz "$PHP_URL";
-
 COPY docker-php* /usr/local/bin/
 
 RUN set -eux; \
+    cd /opt/src; \
+    curl -fsSL -o php.tar.xz "$PHP_URL"; \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         argon2-dev \
