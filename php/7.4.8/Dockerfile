@@ -40,6 +40,7 @@ RUN set -eux; \
     mkdir -p "$PHP_INI_DIR/conf.d"; \
     mkdir -p /opt/case; \
     mkdir -p /opt/src; \
+    mkdir -p /opt/app/composer; \
     mkdir -p /opt/logs/php;\
     mkdir -p /usr/local/sbin; \
     chown httpd:httpd /opt/case; \
@@ -200,6 +201,12 @@ RUN set -eux; \
             echo 'include=etc/php-fpm.d/*.conf'; \
         } | tee php-fpm.conf; \
     fi;
+
+ENV COMPOSER_HOME /opt/app/composer
+ENV PATH /opt/app/composer/vendor/bin:$PATH
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer; \
+    php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --snapshot && rm -rf /tmp/composer-setup.php
 
 COPY etc/web.conf "$PHP_INI_DIR/php-fpm.d/"
 COPY etc/*.ini "$PHP_INI_DIR/"
