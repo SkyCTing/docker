@@ -149,7 +149,7 @@ RUN chmod 777 /opt/app/nginx/conf/redis-cli; \
 
 WORKDIR /opt/app/nginx
 
-EXPOSE 80 443 9001
+EXPOSE 80 443
 
 STOPSIGNAL SIGTERM
 
