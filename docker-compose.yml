@@ -7,7 +7,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "9001:9001"
     volumes:
       - D:\SourceCode:/opt/case:rw
 #      - D:\Develop\nginx\conf\:/opt/app/nginx/conf/
@@ -28,6 +27,10 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/skyting/php:7.4.8
     container_name: php
     restart: always
+    expose:
+      - 9000
+    ports:
+      - "9000:9000"
     volumes:
       - D:\Develop\php\etc\php.ini:/opt/app/php/etc/php.ini
       - D:\Develop\php\etc\cron.ini:/opt/app/php/etc/cron.ini
