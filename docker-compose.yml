@@ -70,16 +70,16 @@ services:
 #     mywebnet:
 #       ipv4_address: 10.11.0.4
 
-  mysql:
-    image: mysql
-    restart: always
-    container_name: mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD : 123456sdfsdf
-    networks:
-      - default
+#  mysql:
+#    image: mysql
+#    restart: always
+#    container_name: mysql
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD : 123456sdfsdf
+#    networks:
+#      - default
 
   redis:
     image: registry.cn-hangzhou.aliyuncs.com/skyting/redis:6.0.6
