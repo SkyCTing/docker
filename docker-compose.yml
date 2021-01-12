@@ -8,12 +8,17 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - D:\SourceCode:/opt/case:rw
+#      - D:\SourceCode:/opt/case:rw
+      - /Users/dingmingchun/SourceCode:/opt/case:rw
 #      - D:\Develop\nginx\conf\:/opt/app/nginx/conf/
-      - D:\Develop\nginx\conf\nginx.conf:/opt/app/nginx/conf/nginx.conf
-      - D:\Develop\nginx\conf\conf.d\:/opt/app/nginx/conf/conf.d
-      - D:\Develop\nginx\conf\cert\:/opt/app/nginx/conf/cert/
-      - D:\Develop\nginx\logs\:/opt/logs/nginx/
+#      - D:\Develop\nginx\conf\nginx.conf:/opt/app/nginx/conf/nginx.conf
+#      - D:\Develop\nginx\conf\conf.d\:/opt/app/nginx/conf/conf.d
+#      - D:\Develop\nginx\conf\cert\:/opt/app/nginx/conf/cert/
+#      - D:\Develop\nginx\logs\:/opt/logs/nginx/
+      - /Users/dingmingchun/Develop/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
+      - /Users/dingmingchun/Develop/nginx/conf/conf.d/:/opt/app/nginx/conf/conf.d
+      - /Users/dingmingchun/Develop/nginx/conf/cert/:/opt/app/nginx/conf/cert/
+      - /Users/dingmingchun/Develop/nginx/logs/:/opt/logs/nginx/
 #      - /opt/case/:/opt/case
 #      - /opt/app/nginx/logs:/opt/app/nginx/logs
 #      - /opt/app/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
@@ -32,10 +37,14 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - D:\Develop\php\etc\php.ini:/opt/app/php/etc/php.ini
-      - D:\Develop\php\etc\cron.ini:/opt/app/php/etc/cron.ini
-      - D:\Develop\php\logs\:/opt/logs/php/
-      - D:\SourceCode:/opt/case:rw
+#      - D:\Develop\php\etc\php.ini:/opt/app/php/etc/php.ini
+#      - D:\Develop\php\etc\cron.ini:/opt/app/php/etc/cron.ini
+#      - D:\Develop\php\logs\:/opt/logs/php/
+#      - D:\SourceCode:/opt/case:rw
+      - /Users/dingmingchun/Develop/php/etc/php.ini:/opt/app/php/etc/php.ini
+      - /Users/dingmingchun/Develop/php/etc/cron.ini:/opt/app/php/etc/cron.ini
+      - /Users/dingmingchun/Develop/php/logs/:/opt/logs/php/
+      - /Users/dingmingchun/SourceCode:/opt/case:rw
     extra_hosts:
       - "passport.2345.com:172.17.18.185"
       - "login.2345.com:172.17.18.185"
@@ -89,9 +98,11 @@ services:
     - "6379:6379"
     volumes:
 #     - /opt/logs/redis/:/opt/logs/redis/
-     - D:\Develop\redis\logs\:/opt/app/redis/logs/
+      - /Users/dingmingchun/Develop/redis/logs/:/opt/app/redis/logs/
+#      - D:\Develop\redis\logs\:/opt/app/redis/logs/
 #     - /opt/app/redis/db/:/opt/app/redis/db/
-     - D:\Develop\redis\db\:/opt/app/redis/db/
+#      - D:\Develop\redis\db\:/opt/app/redis/db/
+      - /Users/dingmingchun/Develop/redis/db/:/opt/app/redis/db/
     networks:
       - default
 networks:
