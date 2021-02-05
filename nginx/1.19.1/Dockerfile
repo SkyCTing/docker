@@ -141,7 +141,7 @@ COPY conf/nginx.conf /opt/app/nginx/conf/nginx.conf
 COPY conf/conf.d/*.conf /opt/app/nginx/conf/conf.d/
 COPY conf/proxy.lua /opt/app/nginx/conf/proxy.lua
 COPY conf/redis-cli /opt/app/nginx/conf/redis-cli
-COPY conf/cert/* /opt/app/nginx/conf/cert/
+COPY conf/ssl/* /opt/app/nginx/conf/cert/
 
 RUN chmod 777 /opt/app/nginx/conf/redis-cli; \
     chmod -R 777 /opt/app/nginx/conf/proxy.lua; \
