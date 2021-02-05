@@ -1,0 +1,94 @@
+version: '3'
+services:
+  nginx:
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/nginx:1.19.1
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - D:\SourceCode:/opt/case:rw
+      - D:\Develop\nginx\conf\:/opt/app/nginx/conf/
+      - D:\Develop\nginx\conf\nginx.conf:/opt/app/nginx/conf/nginx.conf
+      - D:\Develop\nginx\conf\conf.d\:/opt/app/nginx/conf/conf.d
+      - D:\Develop\nginx\conf\cert\:/opt/app/nginx/conf/cert/
+      - D:\Develop\nginx\logs\:/opt/logs/nginx/
+    networks:
+      - default
+    links:
+      - php
+#
+  php:
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/php:7.4.8
+    container_name: php
+    restart: always
+    expose:
+      - 9000
+    ports:
+      - "9000:9000"
+    volumes:
+      - D:\Develop\php\etc\php.ini:/opt/app/php/etc/php.ini
+      - D:\Develop\php\etc\cron.ini:/opt/app/php/etc/cron.ini
+      - D:\Develop\php\logs\:/opt/logs/php/
+      - D:\SourceCode:/opt/case:rw
+    extra_hosts:
+      - "passport.2345.com:172.17.18.185"
+      - "login.2345.com:172.17.18.185"
+      - "houtai.2345.com:172.17.12.70"
+      - "test.dsp.union2.50bang.org:172.17.209.3"
+      - "test.bumblebee.2345.cn:172.17.18.169"
+      - "xq.2345.com:172.17.12.70"
+      - "imgwx1.2345.com:172.17.12.70"
+      - "newsapp.2345.com:172.17.12.47"
+      - "xhgui.web.2345.cn:172.17.12.70"
+      - "www.adintercept.com:172.17.18.116"
+      - "starnews.2345.com:172.17.12.70"
+      - "test.algessw.2345.com:172.17.0.130"
+      - "permission.2345.cn:172.17.18.33"
+    networks:
+      - default
+
+#  mysql:
+#   image: repo-docker.2345.com:8088/starnews.2345.com/mysql:5.7.23
+#   restart: always
+#   container_name: starnews_mysql
+#   ports:
+#   - "3308:3306"
+#   volumes:
+#   - /opt/app/starnews/mysql/tmp/:/opt/app/mysql57/tmp/
+#   - /opt/app/starnews/mysql/var/:/opt/app/mysql57/var/
+#   - /opt/app/starnews/mysql/data/:/opt/app/mysql57/data/
+#   - /opt/app/starnews/mysql/logs/:/opt/app/mysql57/logs/
+#   environment:
+#     MYSQL_ROOT_PASSWORD: 123456
+#   networks:
+#     mywebnet:
+#       ipv4_address: 10.11.0.4
+
+#  mysql:
+#    image: mysql
+#    restart: always
+#    container_name: mysql
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD : 123456sdfsdf
+#    networks:
+#      - default
+
+  redis:
+    image: registry.cn-hangzhou.aliyuncs.com/skyting/redis:6.0.6
+    restart: always
+    container_name: redis
+    ports:
+    - "6379:6379"
+    volumes:
+      - D:\Develop\redis\logs\:/opt/app/redis/logs/
+      - D:\Develop\redis\db\:/opt/app/redis/db/
+    networks:
+      - default
+networks:
+  default:
+    external:
+      name: sky
