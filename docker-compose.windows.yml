@@ -12,7 +12,7 @@ services:
       - D:\Develop\nginx\conf\:/opt/app/nginx/conf/
       - D:\Develop\nginx\conf\nginx.conf:/opt/app/nginx/conf/nginx.conf
       - D:\Develop\nginx\conf\conf.d\:/opt/app/nginx/conf/conf.d
-      - D:\Develop\nginx\conf\cert\:/opt/app/nginx/conf/cert/
+      - D:\Develop\nginx\conf\ssl\:/opt/app/nginx/conf/ssl/
       - D:\Develop\nginx\logs\:/opt/logs/nginx/
     networks:
       - default

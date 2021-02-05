@@ -11,7 +11,7 @@ services:
       - /Users/dingmingchun/SourceCode:/opt/case:rw
       - /Users/dingmingchun/Develop/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
       - /Users/dingmingchun/Develop/nginx/conf/conf.d/:/opt/app/nginx/conf/conf.d
-      - /Users/dingmingchun/Develop/nginx/conf/cert/:/opt/app/nginx/conf/cert/
+      - /Users/dingmingchun/Develop/nginx/conf/ssl/:/opt/app/nginx/conf/ssl/
       - /Users/dingmingchun/Develop/nginx/logs/:/opt/logs/nginx/
     networks:
       - default
