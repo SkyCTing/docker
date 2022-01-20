@@ -8,11 +8,11 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /Users/dingmingchun/SourceCode:/opt/case:rw
-      - /Users/dingmingchun/Develop/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
-      - /Users/dingmingchun/Develop/nginx/conf/conf.d/:/opt/app/nginx/conf/conf.d
-      - /Users/dingmingchun/Develop/nginx/conf/ssl/:/opt/app/nginx/conf/ssl/
-      - /Users/dingmingchun/Develop/logs/:/opt/logs/
+      - ~/SourceCode:/opt/case:rw
+      - ~/Develop/nginx/conf/nginx.conf:/opt/app/nginx/conf/nginx.conf
+      - ~/Develop/nginx/conf/conf.d/:/opt/app/nginx/conf/conf.d
+      - ~/Develop/nginx/conf/ssl/:/opt/app/nginx/conf/ssl/
+      - ~/Develop/logs/:/opt/logs/
     networks:
       - default
     links:
@@ -27,10 +27,10 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - /Users/dingmingchun/Develop/php/etc/php.ini:/opt/app/php/etc/php.ini
-      - /Users/dingmingchun/Develop/php/etc/cron.ini:/opt/app/php/etc/cron.ini
-      - /Users/dingmingchun/SourceCode:/opt/case:rw
-      - /Users/dingmingchun/Develop/logs:/opt/logs/
+      - ~/Develop/php/etc/php.ini:/opt/app/php/etc/php.ini
+      #- ~/Develop/php/etc/cron.ini:/opt/app/php/etc/cron.ini
+      - ~/SourceCode:/opt/case:rw
+      - ~/Develop/logs:/opt/logs/
     extra_hosts:
       - "test.bumblebee.2345.cn:172.17.18.169"
       - "xhgui.web.2345.cn:172.17.12.70"
@@ -65,8 +65,8 @@ services:
     expose:
       - 6379
     volumes:
-      - /Users/dingmingchun/Develop/redis/logs/:/opt/app/redis/logs/
-      - /Users/dingmingchun/Develop/redis/db/:/opt/app/redis/db/
+      - ~/Develop/redis/logs/:/opt/app/redis/logs/
+      - ~/Develop/redis/db/:/opt/app/redis/db/
     networks:
       - default
 networks:
