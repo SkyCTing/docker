@@ -1,5 +1,9 @@
 #!/bin/bash
 
+docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
+
+docker network create --subnet=172.20.0.1/24 sky
+
 mkdir -p ~/Develop/php/etc
 cp php/7.4.8/etc/*.ini ~/Develop/php/etc
 
@@ -14,4 +18,6 @@ cp nginx/1.19.1/conf/nginx.conf ~/Develop/nginx/conf/nginx.conf
 mkdir ~/Develop/logs/nginx
 mkdir ~/Develop/logs/php
 
-docker-compose -f docker-compose.mac.yml up -d
+cp docker-compose.mac.yml docker-compose.yml
+
+docker-compose up -d
