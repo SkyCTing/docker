@@ -97,7 +97,7 @@ mysql_get_config() {
 
 # Do a temporary startup of the MySQL server, for init purposes
 docker_temp_server_start() {
-	if [ "${MYSQL_MAJOR}" = '5.6' ] || [ "${MYSQL_MAJOR}" = '5.7' ]; then
+	if [ "${MYSQL_MAJOR}" = '5.6.40' ] || [ "${MYSQL_MAJOR}" = '5.7' ]; then
 		"$@" --skip-networking --socket="${SOCKET}" &
 		mysql_note "Waiting for server startup"
 		local i
@@ -157,7 +157,7 @@ docker_create_db_directories() {
 # initializes the database directory
 docker_init_database_dir() {
 	mysql_note "Initializing database files"
-	if [ "$MYSQL_MAJOR" = '5.6' ]; then
+	if [ "$MYSQL_MAJOR" = '5.6.40' ]; then
 		mysql_install_db --datadir="$DATADIR" --rpm --keep-my-cnf "${@:2}"
 	else
 		"$@" --initialize-insecure
@@ -239,7 +239,7 @@ docker_setup_db() {
 	fi
 
 	local passwordSet=
-	if [ "$MYSQL_MAJOR" = '5.6' ]; then
+	if [ "$MYSQL_MAJOR" = '5.6.40' ]; then
 		# no, we don't care if read finds a terminating character in this heredoc (see above)
 		read -r -d '' passwordSet <<-EOSQL || true
 			DELETE FROM mysql.user WHERE user NOT IN ('mysql.sys', 'mysqlxsys', 'root') OR host NOT IN ('localhost') ;
@@ -304,7 +304,7 @@ _mysql_passfile() {
 }
 
 # Mark root user as expired so the password must be changed before anything
-# else can be done (only supported for 5.6+)
+# else can be done (only supported for 5.6.40+)
 mysql_expire_root_user() {
 	if [ -n "$MYSQL_ONETIME_PASSWORD" ]; then
 		docker_process_sql --database=mysql <<-EOSQL

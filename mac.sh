@@ -15,8 +15,8 @@ cp nginx/1.19.1/conf/conf.d/*.conf ~/Develop/nginx/conf/conf.d
 
 cp nginx/1.19.1/conf/nginx.conf ~/Develop/nginx/conf/nginx.conf
 
-mkdir ~/Develop/logs/nginx
-mkdir ~/Develop/logs/php
+mkdir -p ~/Develop/logs/nginx
+mkdir -p ~/Develop/logs/php
 
 cp docker-compose.mac.yml docker-compose.yml
 
