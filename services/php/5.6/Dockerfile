@@ -25,7 +25,6 @@ RUN apk add --no-cache \
     openssh;
 
 # php image's www-data user uid & gid are 82, change them to 1000 (primary user)
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-
+RUN apk --no-cache add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 WORKDIR /www
