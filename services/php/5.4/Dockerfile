@@ -11,7 +11,7 @@ RUN sed -i "s/httpredir.debian.org/${CONTAINER_PACKAGE_URL}/g" /etc/apt/sources.
     && apt-get update
 
 
-COPY ./extensions /tmp/extensions
+COPY extensions /tmp/extensions
 WORKDIR /tmp/extensions
 RUN chmod +x install.sh \
     && sh install.sh \

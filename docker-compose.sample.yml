@@ -69,13 +69,7 @@ services:
       - default
   
   php80:
-    build:
-      context: ./services/php80
-      args:
-        PHP_VERSION: php:${PHP80_VERSION}-fpm-alpine3.13
-        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-        PHP_EXTENSIONS: ${PHP80_EXTENSIONS}
-        TZ: "$TZ"
+    image: ${REPOSITORY}/php:${PHP80_VERSION}
     container_name: php80
     expose:
       - 9501
@@ -92,13 +86,7 @@ services:
       - default
 
   php81:
-    build:
-      context: ./services/php81
-      args:
-        PHP_VERSION: php:${PHP81_VERSION}-fpm-alpine
-        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-        PHP_EXTENSIONS: ${PHP81_EXTENSIONS}
-        TZ: "$TZ"
+    image: ${REPOSITORY}/php:${PHP81_VERSION}
     container_name: php81
     expose:
       - 9501
