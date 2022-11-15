@@ -1,5 +1,7 @@
+# php7 系列dockerfile，可以传入变量编译所有php7
 ARG PHP_VERSION
 FROM ${PHP_VERSION}
+MAINTAINER "Sky Ting"
 
 ARG TZ
 ARG PHP_EXTENSIONS
@@ -9,12 +11,12 @@ ARG CONTAINER_PACKAGE_URL
 RUN if [ $CONTAINER_PACKAGE_URL ] ; then sed -i "s/dl-cdn.alpinelinux.org/${CONTAINER_PACKAGE_URL}/g" /etc/apk/repositories ; fi
 
 
-COPY ./extensions /tmp/extensions
+COPY extensions /tmp/extensions
 WORKDIR /tmp/extensions
 RUN chmod +x install.sh \
     && sh install.sh
 
-ADD ./extensions/install-php-extensions  /usr/local/bin/
+ADD extensions/install-php-extensions  /usr/local/bin/
 
 RUN chmod uga+x /usr/local/bin/install-php-extensions
 
@@ -33,6 +35,10 @@ RUN chmod +x install-composer.sh \
     && sh install-composer.sh \
     && rm -rf /tmp/extensions
 ENV COMPOSER_HOME=/tmp/composer
+
+# 添加git支持
+RUN apk add --no-cache \
+    openssh \
 
 # php image's www-data user uid & gid are 82, change them to 1000 (primary user)
 RUN apk --no-cache add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
