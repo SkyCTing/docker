@@ -14,6 +14,7 @@ mkdir -p /opt/app/starnews/mysql
 docker-compose up -d
 ```
 
+阿里云镜像：https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
 $ sudo docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
 
 
