@@ -25,7 +25,8 @@ ENV COMPOSER_HOME=/tmp/composer
 
 # 添加git支持
 RUN apk add --no-cache \
-    openssh \
+    git \
+    openssh;
 
 # php image's www-data user uid & gid are 82, change them to 1000 (primary user)
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
