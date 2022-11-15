@@ -20,7 +20,7 @@ docker build --no-cache \
 --build-arg PHP_VERSION=php:7.4.27-fpm-alpine \
 --build-arg CONTAINER_PACKAGE_URL=mirrors.ustc.edu.cn \
 --build-arg TZ=Asia/Shanghai \
---build-arg PHP_EXTENSIONS=pdo_mysql,mysqli,mbstring,gd,curl,opcache,zip,redis,soap,apcu \
+--build-arg PHP_EXTENSIONS=pdo_mysql,mysqli,mbstring,gd,curl,opcache,zip,redis,soap,apcu,bcmath,dba,mbstring,sockets,exif,pcntl,gd,sodium,mongodb,xdebug \
 .
 ```
 
