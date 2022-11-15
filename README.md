@@ -14,6 +14,16 @@ mkdir -p /opt/app/starnews/mysql
 docker-compose up -d
 ```
 
+```shell
+docker build --no-cache \
+-t mcskyding/php:7.4.27 \
+--build-arg PHP_VERSION=php:7.4.27-fpm-alpine \
+--build-arg CONTAINER_PACKAGE_URL=mirrors.ustc.edu.cn \
+--build-arg TZ=Asia/Shanghai \
+--build-arg PHP_EXTENSIONS=pdo_mysql,mysqli,mbstring,gd,curl,opcache,zip,redis,soap,apcu \
+.
+```
+
 阿里云镜像：https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
 $ sudo docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
 
