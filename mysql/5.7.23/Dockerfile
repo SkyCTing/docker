@@ -61,7 +61,7 @@ RUN mkdir -p ${INSTALL_DIR}/var/ \
     && chown -R mysql:mysql ${INSTALL_DIR}/* \
     && rm -rf /tmp/mysql-5.7.23
 
-ADD etc/my.cnf ${INSTALL_DIR}/etc/
+ADD ../../services/mysql/5/my.cnf ${INSTALL_DIR}/etc/
 RUN yum install -y openssl
 # workdir
 WORKDIR ${INSTALL_DIR}
