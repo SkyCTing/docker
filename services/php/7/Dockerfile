@@ -1,7 +1,7 @@
 # php7 系列dockerfile，可以传入变量编译所有php7
 ARG PHP_VERSION
 FROM ${PHP_VERSION}
-MAINTAINER "Sky Ting"
+LABEL maintainer="Sky Ting"
 
 ARG TZ
 ARG PHP_EXTENSIONS
