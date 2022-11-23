@@ -1,5 +1,5 @@
 FROM alpine:3.12
-LABEL authors="Sky Ting"
+LABEL maintainer="Sky Ting"
 
 ENV NGINX_VERSION 1.19.1
 ENV OPENRESTY_VERSION 1.17.8.1
