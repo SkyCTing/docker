@@ -29,8 +29,8 @@ $ sudo docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyunc
 
 
 $ sudo docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
-$ sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/skyting/docker:[镜像版本号]
-$ sudo docker push registry.cn-hangzhou.aliyuncs.com/skyting/docker:[镜像版本号]
+$ sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/mcskyding/docker:[镜像版本号]
+$ sudo docker push registry.cn-hangzhou.aliyuncs.com/mcskyding/docker:[镜像版本号]
 
 
 docker删除所有未使用的容器，删除所有未使用的镜像、网络
