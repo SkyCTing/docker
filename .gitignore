@@ -1,6 +1,5 @@
 .idea
 .DS_Store
-docker-compose.yml
 .env
 nohup.out
 www/*
