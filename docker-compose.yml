@@ -196,6 +196,20 @@ services:
     networks:
       - default
 
+  rabbitmq:
+    image: ${REPOSITORY}/rabbitmq:${RABBITMQ_VERSION}
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "${RABBITMQ_HOST_PORT_C}:5672"
+      - "${RABBITMQ_HOST_PORT_S}:15672"
+    environment:
+        TZ: "$TZ"
+        RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+        RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+    networks:
+          - default
+
 networks:
   default:
     driver: bridge
