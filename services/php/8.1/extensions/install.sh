@@ -116,7 +116,7 @@ fi
 
 if [[ -z "${EXTENSIONS##*,sockets,*}" ]]; then
     echo "---------- Install sockets ----------"
-	docker-php-ext-install ${MC} sockets
+	docker-php-ext-install sockets
 fi
 
 if [[ -z "${EXTENSIONS##*,gettext,*}" ]]; then
