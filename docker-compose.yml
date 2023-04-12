@@ -148,22 +148,22 @@ services:
     networks:
       - default
 
-#  mysql5:
-#    image: mysql:${MYSQL5_VERSION}
-#    container_name: mysql5
-#    ports:
-#      - "${MYSQL5_HOST_PORT}:3306"
-#    volumes:
-#      - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
-#      - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
-#      - ${MYSQL5_LOG_DIR}:/var/log/mysql/:rw
-#    restart: always
-#    networks:
-#      - default
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "${MYSQL5_ROOT_PASSWORD}"
-#      MYSQL_ROOT_HOST: "${MYSQL5_ROOT_HOST}"
-#      TZ: "$TZ"
+  mysql:
+    image: mysql:${MYSQL5_VERSION}
+    container_name: mysql
+    ports:
+      - "${MYSQL5_HOST_PORT}:3306"
+    volumes:
+      - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
+      - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
+      - ${MYSQL5_LOG_DIR}:/var/log/mysql/:rw
+    restart: always
+    networks:
+      - default
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL5_ROOT_PASSWORD}"
+      MYSQL_ROOT_HOST: "${MYSQL5_ROOT_HOST}"
+      TZ: "$TZ"
 
   mysql8:
     image: mysql:${MYSQL_VERSION}
@@ -197,19 +197,19 @@ services:
     networks:
       - default
 
-  rabbitmq:
-    image: ${REPOSITORY}/rabbitmq:${RABBITMQ_VERSION}
-    container_name: rabbitmq
-    restart: always
-    ports:
-      - "${RABBITMQ_HOST_PORT_C}:5672"
-      - "${RABBITMQ_HOST_PORT_S}:15672"
-    environment:
-        TZ: "$TZ"
-        RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
-        RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
-    networks:
-          - default
+  # rabbitmq:
+  #   image: ${REPOSITORY}/rabbitmq:${RABBITMQ_VERSION}
+  #   container_name: rabbitmq
+  #   restart: always
+  #   ports:
+  #     - "${RABBITMQ_HOST_PORT_C}:5672"
+  #     - "${RABBITMQ_HOST_PORT_S}:15672"
+  #   environment:
+  #       TZ: "$TZ"
+  #       RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+  #       RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+  #   networks:
+  #         - default
 
 networks:
   default:
