@@ -69,6 +69,12 @@ if [ -z "${EXTENSIONS##*,mbstring,*}" ]; then
 	docker-php-ext-install mbstring
 fi
 
+if [[ -z "${EXTENSIONS##*,apcu,*}" ]]; then
+    echo "---------- Install apcu ----------"
+    pecl install apcu-4.0.11
+    docker-php-ext-enable apcu
+fi
+
 if [ -z "${EXTENSIONS##*,exif,*}" ]; then
     echo "---------- Install exif ----------"
 	docker-php-ext-install exif
