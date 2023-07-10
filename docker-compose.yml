@@ -34,6 +34,7 @@ services:
       - "esb-utils.local.55haitao.com:10.0.0.10"
       - "hub.local.55haitao.com:10.0.0.10"
       - "esb-user.local.55haitao.com:10.0.0.10"
+      - "store.local.api.55haitao.com:10.0.0.10"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
       - ${PHP56_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
