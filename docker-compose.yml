@@ -1,4 +1,18 @@
 version: "3"
+
+#/etc/hosts
+x-hosts: &hosts
+  - store.local.55haitao.com:${NGINX_IP}
+  - maxrebates.local.55haitao.com:${NGINX_IP}
+  - affiliate-source.local.55haitao.com:${NGINX_IP}
+  - gocashback.local.55haitao.com:${NGINX_IP}
+  - esb-user.local.55haitao.com:${NGINX_IP}
+  - esb-base.local.55haitao.com:${NGINX_IP}
+  - esb-utils.local.55haitao.com:${NGINX_IP}
+  - hub.local.55haitao.com:${NGINX_IP}
+  - esb-api.local.55haitao.com:${NGINX_IP}
+  - esb-medium.local.55haitao.com:${NGINX_IP}
+
 services:
   nginx:
     image: mcskyding/nginx:${NGINX_VERSION}
@@ -21,21 +35,14 @@ services:
       # - default
       # 可以把-default 改成下列配置，以固定容器IP
       default:
-        ipv4_address: 10.0.0.10
+        ipv4_address: ${NGINX_IP}
 
   php56:
     image: ${REPOSITORY}/php:${PHP56_VERSION}
     container_name: php56
     expose:
       - 9501
-    extra_hosts:
-      - "affiliate-source.local.55haitao.com:10.0.0.10"
-      - "esb-base.local.55haitao.com:10.0.0.10"
-      - "esb-utils.local.55haitao.com:10.0.0.10"
-      - "hub.local.55haitao.com:10.0.0.10"
-      - "esb-user.local.55haitao.com:10.0.0.10"
-      - "store.local.api.55haitao.com:10.0.0.10"
-      - "esb-medium.local.55haitao.com:10.0.0.10"
+    extra_hosts: *hosts
     volumes:
       - ${SOURCE_DIR}:/www/:rw
       - ${PHP56_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
@@ -53,10 +60,7 @@ services:
     container_name: php71
     expose:
       - 9501
-    extra_hosts:
-      - "esb-base.local.55haitao.com:10.0.0.10"
-      - "affiliate-source.local.55haitao.com:10.0.0.10"
-      - "esb-utils.local.55haitao.com:10.0.0.10"
+    extra_hosts: *hosts
     volumes:
       - ${SOURCE_DIR}:/www/:rw
       - ${PHP7_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
@@ -95,10 +99,7 @@ services:
     container_name: php74
     expose:
       - 9501
-    extra_hosts:
-      - "esb-base.local.55haitao.com:10.0.0.10"
-      - "affiliate-source.local.55haitao.com:10.0.0.10"
-      - "esb-utils.local.55haitao.com:10.0.0.10"
+    extra_hosts: *hosts
     volumes:
       - ${SOURCE_DIR}:/www/:rw
       - ${PHP7_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
@@ -140,12 +141,7 @@ services:
       - ${PHP81_LOG_DIR}:/var/log/php
       - ${DATA_DIR}/composer:/tmp/composer
       - ${PHP81_LOG_DIR}/cron:/var/log/cron
-    extra_hosts:
-      - "esb-base.local.55haitao.com:10.0.0.10"
-      - "affiliate-source.local.55haitao.com:10.0.0.10"
-      - "esb-utils.local.55haitao.com:10.0.0.10"
-      - "esb-user.local.55haitao.com:10.0.0.10"
-      - "esb-api.local.55haitao.com:10.0.0.10"
+    extra_hosts: *hosts
     restart: always
     cap_add:
       - SYS_PTRACE
@@ -222,4 +218,4 @@ networks:
       driver: default
       # 解除下面的注释可以设置网段，用于nginx等容器固定容器IP
       config:
-        - subnet: 10.0.0.0/24
+        - subnet: ${SUBNET_IP}
