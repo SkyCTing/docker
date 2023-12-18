@@ -228,7 +228,7 @@ $ docker-compose down --rmi all
 ```
 
 ### Certbot 申请免费的ssl证书
-1. 先配置http可访问， 以 test.ogenes.cn 为例
+1. 先配置http可访问， 以 test.pianophile.cn 为例
 ```shell
 [root@ogenes01 docker-lnmp]# pwd
 /data/docker-lnmp
@@ -237,7 +237,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name test.ogenes.cn;
+    server_name finance.pianophile.cn;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -258,26 +258,11 @@ Hello Ogenes Test!
 ```
 2. 申请ssl证书
 ```shell
-[root@ogenes01 docker-lnmp]# docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d test.ogenes.cn
+docker-compose run --rm  certbot certonly --webroot --webroot-path /www/certbot/ -d finance.pianophile.cn
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
-Requesting a certificate for test.ogenes.cn
+Requesting a certificate for finance.pianophile.cn
 
 Successfully received certificate.
-Certificate is saved at: /etc/letsencrypt/live/test.ogenes.cn/fullchain.pem
-Key is saved at:         /etc/letsencrypt/live/test.ogenes.cn/privkey.pem
-This certificate expires on 2023-07-18.
-These files will be updated when the certificate renews.
-
-NEXT STEPS:
-- The certificate will need to be renewed before it expires. Certbot can automatically renew the certificate in the background, but you may need to take steps to enable that functionality. See https://certbot.org/renewal-setup for instructions.
-We were unable to subscribe you the EFF mailing list because your e-mail address appears to be invalid. You can try again later by visiting https://act.eff.org.
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-If you like Certbot, please consider supporting our work by:
- * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
- * Donating to EFF:                    https://eff.org/donate-le
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-[root@ogenes01 docker-lnmp]#
 ```
 
 3. 修改nginx配置，支持https
