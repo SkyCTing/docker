@@ -47,7 +47,7 @@ services:
     image: certbot/certbot
     container_name: certbot
     volumes:
-      - ${SOURCE_DIR}/certbot/:/www/certbot/:rw
+      - ${SOURCE_DIR}:/www/:rw
       - ./services/nginx/ssl/:/etc/letsencrypt/:rw
     networks:
       default:
@@ -148,12 +148,12 @@ services:
   php81:
     image: ${REPOSITORY}/php:${PHP81_VERSION}
     build:
-     context: ./services/php/8.1
-     args:
-       PHP_VERSION: php:${PHP81_VERSION}-fpm-alpine
-       CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-       PHP_EXTENSIONS: ${PHP81_EXTENSIONS}
-       TZ: "$TZ"
+      context: ./services/php/8.1
+      args:
+        PHP_VERSION: php:${PHP81_VERSION}-fpm-alpine
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+        PHP_EXTENSIONS: ${PHP81_EXTENSIONS}
+        TZ: "$TZ"
     container_name: php81
     expose:
       - 9501
