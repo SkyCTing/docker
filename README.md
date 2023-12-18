@@ -1,15 +1,8 @@
 #### 使用前的操作
-
-```shell
-mkdir -p /opt/case
-mkdir -p /opt/app/starnews/nginx
-mkdir -p /opt/app/starnews/php
-mkdir -p /opt/app/starnews/redis
-mkdir -p /opt/app/starnews/mysql
-```
+update @ 2022.10.31
+默认使用image标签，出现不兼容时，注释image配置，使用build
 
 开启环境:
-
 ```shell
 docker-compose up -d
 ```
