@@ -22,7 +22,7 @@ services:
       - "${NGINX_HTTPS_HOST_PORT}:443"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
-      - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw
+      - ${NGINX_SSL_CERTIFICATE_DIR}:/etc/nginx/ssl:rw
       - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d/:rw
       - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf:ro
       - ${NGINX_FASTCGI_PHP_CONF}:/etc/nginx/fastcgi-php.conf:ro
@@ -36,6 +36,18 @@ services:
       # 可以把-default 改成下列配置，以固定容器IP
       default:
         ipv4_address: ${NGINX_IP}
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ${SOURCE_DIR}/certbot/:/www/certbot/:rw
+      - ./services/nginx/ssl/:/etc/letsencrypt/:rw
+    networks:
+      default:
+        ipv4_address: ${CERTBOT_IP}
+
+    
 
   php56:
     image: ${REPOSITORY}/php:${PHP56_VERSION}
