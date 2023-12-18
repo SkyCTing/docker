@@ -1,11 +1,20 @@
-#### 使用前的操作
+# 使用说明
 update @ 2022.10.31
+
 默认使用image标签，出现不兼容时，注释image配置，使用build
 
 开启环境:
 ```shell
 docker-compose up -d
 ```
+创建代码用户
+
+``` shell
+adduser www-data
+sermod -s /sbin/nologin www-data
+```
+
+编辑镜像
 
 ```shell
 docker build --no-cache \
@@ -17,9 +26,10 @@ docker build --no-cache \
 .
 ```
 
+
+
 阿里云镜像：https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
 $ sudo docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
-
 
 $ sudo docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
 $ sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/mcskyding/docker:[镜像版本号]
@@ -46,8 +56,6 @@ docker network prune
 4. Redis 支持 4.0 、5.0 、6.0 版本；
 5. PHP 扩展包括了gd、grpc、redis、protobuf、memcached、swoole等；
 
-### 一. [install docker](https://github.com/ogenes/docker-lnmp/wiki/Docker-%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%AE%89%E8%A3%85)
-
 ```
 $ docker -v
 Docker version 20.10.21, build baeda1f
@@ -55,12 +63,6 @@ Docker version 20.10.21, build baeda1f
 $ docker-compose -v
 Docker Compose version v2.12.2
 
-```
-### 二. download
-```$xslt
-$ pwd
-/d/app
-$ git clone https://github.com/ogenes/docker-lnmp.git
 ```
 ### 三. init
 ```shell script
@@ -105,10 +107,10 @@ $ docker-compose restart nginx
     Redis 5.0
     可以通过修改 env 文件的 MYSQL_VERSION 、REDIS_VERSION 来选择其他版本
     MySQL 和 Redis 切换版本时，注意切换配置文件
-
+    
     项目目录默认为 docker-lnmp/../www 目录
     可以通过修改 env 文件的 WEB_ROOT_PATH 来指定其他目录
-
+    
     nginx 虚拟主机配置文件在 docker-lnmp/nginx/conf.d 目录内， 可以参考 default 项目配置。
 
 ### 七. restart | down | rebuild
@@ -137,101 +139,43 @@ $ docker-compose down --rmi all
 ### 目录结构
 
 ```
-├── LICENSE
-├── README.md
-├── compose.yml
-├── mysql
-         ├── Dockerfile
-         └── docker.cnf
-├── nginx
-         ├── Dockerfile
-         ├── conf.d
-                  ├── default.conf
-                  ├── fpm
-                           ├── php56-fpm
-                           ├── php71-fpm
-                           ├── php72-fpm
-                           ├── php73-fpm
-                           ├── php74-fpm
-                           ├── php80-fpm
-                           └── php81-fpm
-         ├── nginx.conf
-├── php56
-         ├── Dockerfile
-         └── config
-             ├── php-fpm.conf
-             ├── php-fpm.d
-                      ├── www.conf
-                      └── zz-docker.conf
-             └── php.ini
-├── php71
-         ├── Dockerfile
-         └── config
-             ├── php-fpm.conf
-             ├── php-fpm.d
-                      ├── www.conf
-                      └── zz-docker.conf
-             └── php.ini
-├── php72
-         ├── Dockerfile
-         └── config
-             ├── php-fpm.conf
-             ├── php-fpm.d
-                      ├── www.conf
-                      └── zz-docker.conf
-             └── php.ini
-├── php73
-         ├── Dockerfile
-         └── config
-             ├── php-fpm.conf
-             ├── php-fpm.d
-                      ├── www.conf
-                      └── zz-docker.conf
-             └── php.ini
-├── php74
-         ├── Dockerfile
-         └── config
-             ├── php-fpm.conf
-             ├── php-fpm.d
-                      ├── www.conf
-                      └── zz-docker.conf
-             └── php.ini
-├── php80
-         ├── Dockerfile
-         └── config
-             ├── php-fpm.conf
-             ├── php-fpm.d
-                      ├── www.conf
-                      └── zz-docker.conf
-             └── php.ini
-├── php81
-         ├── Dockerfile
-         └── config
-             ├── php-fpm.conf
-             ├── php-fpm.d
-                      ├── www.conf
-                      └── zz-docker.conf
-             └── php.ini
-└── redis
-├── Dockerfile
-├── redis4.conf
-├── redis5.conf
-└── redis6.conf
+/
+├── data                        数据库数据目录
+│   ├── composer                composer 数据目录
+│   ├── esdata                  ElasticSearch 数据目录
+│   ├── mongo                   MongoDB 数据目录
+│   ├── mysql                   MySQL8 数据目录
+│   ├── mysql5                  MySQL5 数据目录
+│   └── redis                   Redis 数据目录
+├── services                    服务构建文件和配置文件目录
+│   ├── elasticsearch           ElasticSearch 配置文件目录
+│   ├── mysql                   MySQL8 配置文件目录
+│   ├── mysql5                  MySQL5 配置文件目录
+│   ├── nginx                   Nginx 配置文件目录
+│   ├── php                     PHP5.6 - PHP7.4 配置目录
+│   ├── php54                   PHP5.4 配置目录
+│   └── redis                   Redis 配置目录
+├── logs                        日志目录
+├── docker-compose.sample.yml   Docker 服务配置示例文件
+├── docker-compose.yml   				Docker 服务配置文件
+├── env.smaple                  环境配置示例文件
+├── LICENSE											证书
+├── README.md										说明文件
+└── www                         PHP 代码目录
 
 ```
 
-### Certbot 申请免费的ssl证书
-1. 先配置http可访问， 以 test.pianophile.cn 为例
+## Certbot 申请免费的ssl证书
+1. 先配置http可访问， 以 coupon.pianophile.cn 为例
+
 ```shell
-[root@ogenes01 docker-lnmp]# pwd
-/data/docker-lnmp
-[root@ogenes01 docker-lnmp]# vim nginx/conf.d/test.conf
+vim nginx/conf.d/coupon.conf
 server {
     listen 80;
     listen [::]:80;
 
     server_name finance.pianophile.cn;
-
+    
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
@@ -239,51 +183,36 @@ server {
     location / {
         charset utf-8;
         default_type text/html;
-        return 200 'Hello Ogenes Test!';
+        return 200 'Hello World!';
     }
 }
 
-[root@ogenes01 docker-lnmp]# docker-compose restart nginx
-[+] Running 1/1
- ⠿ Container nginx  Started
-[root@ogenes01 docker-lnmp]# curl test.ogenes.cn
-Hello Ogenes Test!
+docker exec -it nginx nginx -s reload
+curl  finance.pianophile.cn
 ```
 2. 申请ssl证书
-```shell
-docker-compose run --rm  certbot certonly --webroot --webroot-path /www/certbot/ -d finance.pianophile.cn
-Saving debug log to /var/log/letsencrypt/letsencrypt.log
-Requesting a certificate for finance.pianophile.cn
 
-Successfully received certificate.
+```shell
+docker-compose run --rm  certbot certonly --webroot --webroot-path /www/coupon/ -d coupon.pianophile.cn --cert-name coupon
 ```
 
 3. 修改nginx配置，支持https
 ```shell
-[root@ogenes01 docker-lnmp]# vim nginx/conf.d/test.conf
+vim nginx/conf.d/coupon.conf
 server {
-    listen 80;
-    listen [::]:80;
-
-    server_name test.ogenes.cn;
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
-
-    location / {
-        return 301 https://test.ogenes.cn$request_uri;
-    }
+    listen          80;
+    listen          [::]:80;
+    server_name     coupon.pianophile.cn;
+    return          301	https://coupon.pianophile.cn$request_uri;
 }
 
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-
-    server_name test.ogenes.cn;
-
-    ssl_certificate /etc/nginx/ssl/live/test.ogenes.cn/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/live/test.ogenes.cn/privkey.pem;
+    listen              443 ssl http2;
+    listen              [::]:443 ssl http2;
+    server_name         coupon.pianophile.cn;
+    ssl_certificate     ssl/live/coupon/fullchain.pem;
+    ssl_certificate_key ssl/live/coupon/privkey.pem;
+    ssl_protocols       TLSv1.1 TLSv1.2 TLSv1.3;
 
     location / {
         charset utf-8;
@@ -291,16 +220,11 @@ server {
         return 200 'Hello Ogenes Test Https!';
     }
 }
-[root@ogenes01 docker-lnmp]# docker-compose restart nginx
-[+] Running 1/1
- ⠿ Container nginx  Started
-[root@ogenes01 docker-lnmp]# curl https://test.ogenes.cn
-Hello Ogenes Test Https!
 ```
-![image-20230419175534350](https://img.ogenes.cn/img/2023/image-20230419175534350.png)
 
 4. 配置计划任务，每个月月初自动刷新
+
 ```shell
-#更新https证书
-1 1 1 * * cd /data/docker-lnmp && docker-compose run --rm certbot renew >> /dev/null 2>&1
+0 0 0 * * cd /data/web/docker && docker-compose run --rm certbot renew >> /dev/null 2>&1
 ```
+
