@@ -171,9 +171,9 @@ services:
     networks:
       - default
 
-  mysql:
+  mysql5:
     image: mysql:${MYSQL5_VERSION}
-    container_name: mysql
+    container_name: mysql5
     ports:
       - "${MYSQL5_HOST_PORT}:3306"
     volumes:
@@ -188,9 +188,9 @@ services:
       MYSQL_ROOT_HOST: "${MYSQL5_ROOT_HOST}"
       TZ: "$TZ"
 
-  mysql8:
+  mysql:
     image: mysql:${MYSQL_VERSION}
-    container_name: mysql8
+    container_name: mysql
     ports:
       - "${MYSQL_HOST_PORT}:3306"
     volumes:
