@@ -176,8 +176,9 @@ server {
 
     server_name finance.pianophile.cn;
     
+    # 针对Laravel，需要定位到public
     location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
+        root /www/certbot;
     }
 
     location / {
