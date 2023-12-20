@@ -374,15 +374,25 @@ docker build --no-cache \
 .
 ```
 
-## 6. 阿里云镜像
+## 6. 远端镜像
 
 阿里云镜像：https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
 
 ``` shell
-sudo docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
-sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/mcskyding/docker:[镜像版本号]
-sudo docker push registry.cn-hangzhou.aliyuncs.com/mcskyding/docker:[镜像版本号]
+$ docker login --username=mcskyding@vip.qq.com registry.cn-hangzhou.aliyuncs.com
+$ docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/mcskyding/docker:[镜像版本号]
+$ docker push registry.cn-hangzhou.aliyuncs.com/mcskyding/docker:[镜像版本号]
 ```
+
+docker官方镜像：https://hub.docker.com/
+
+```shell
+$ docker login --username=mcskyding
+$ docker tag [ImageId] mcskyding/docker:[镜像版本号]
+$ docker push mcskyding/docker:[镜像版本号]
+```
+
+
 
 ## 7. 管理命令
 
