@@ -116,7 +116,7 @@ fi
 
 if [[ -z "${EXTENSIONS##*,sockets,*}" ]]; then
     echo "---------- Install sockets ----------"
-	docker-php-ext-install sockets
+	docker-php-ext-install ${MC} sockets
 fi
 
 if [[ -z "${EXTENSIONS##*,gettext,*}" ]]; then
@@ -199,7 +199,7 @@ if [[ -z "${EXTENSIONS##*,interbase,*}" ]]; then
 	#docker-php-ext-install ${MC} interbase
 fi
 
-if [[ -z "${EXTENSIONS##*,,*}" ]]; then
+if [[ -z "${EXTENSIONS##*,hprose,*}" ]]; then
     echo "---------- Install hprose ----------"
     printf "\n" | pecl install hprose
     docker-php-ext-enable hprose

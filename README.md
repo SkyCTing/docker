@@ -1,6 +1,47 @@
-update @ 2022.10.31
+
+update @ 2023-12-20
 
 默认使用image标签，出现不兼容时，注释image配置，使用build
+
+DNMP（Docker + Nginx/Openresty + MySQL5,8 + PHP5,7,8 + Redis + ElasticSearch + MongoDB + RabbitMQ）是一款全功能的***\*LNMP一键安装程序，支持Arm CPU\****。
+
+<details>
+<summary>DNMP项目特点</summary>
+
+1. `100%`开源
+
+2. `100%`遵循Docker标准
+
+3. 支持**多版本PHP**共存，可任意切换（PHP5.4、PHP5.6、PHP7.1、PHP7.2、PHP7.3、PHP7.4、PHP8.0)
+
+4. 支持绑定**任意多个域名**
+
+5. 支持**HTTPS和HTTP/2**
+
+6. **PHP源代码、MySQL数据、配置文件、日志文件**都可在Host中直接修改查看
+
+7. 内置**完整PHP扩展安装**命令
+
+8. 默认支持`pdo_mysql`、`mysqli`、`mbstring`、`gd`、`curl`、`opcache`等常用热门扩展，根据环境灵活配置
+
+9. 可一键选配常用服务：
+    - 多PHP版本：PHP5.4、PHP5.6、PHP7.0-7.4、PHP8.0
+    - Web服务：Nginx、Openresty
+    - 数据库：MySQL5、MySQL8、Redis、memcached、MongoDB、ElasticSearch
+    - 消息队列：RabbitMQ
+    - 辅助工具：Kibana、Logstash、phpMyAdmin、phpRedisAdmin、AdminMongo
+
+10. 实际项目中应用，确保`100%`可用
+
+11. 所有镜像源于[Docker官方仓库](https://hub.docker.com)，安全可靠
+
+12. 一次配置，**Windows、Linux、MacOs**皆可用
+
+13. 支持快速安装扩展命令 `install-php-extensions apcu`
+
+14. 支持安装certbot获取免费https用的SSL证书
+
+     [TOC]
 
 ## 1. 目录结构
 
