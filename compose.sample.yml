@@ -53,6 +53,58 @@ services:
     networks:
       - default
 
+  php82:
+    image: ${REPOSITORY}/php:${PHP82_VERSION}
+    build:
+      context: ./services/php/8.2
+      args:
+        PHP_VERSION: php:${PHP82_VERSION}-fpm-alpine
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+        PHP_EXTENSIONS: ${PHP82_EXTENSIONS}
+        TZ: "$TZ"
+    container_name: php82
+    expose:
+      - 9501
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+      - ${PHP82_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP82_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP82_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+      - ${PHP82_LOG_DIR}/cron:/var/log/cron
+    extra_hosts: *hosts
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - default
+
+  php81:
+    image: ${REPOSITORY}/php:${PHP81_VERSION}
+    build:
+      context: ./services/php/8.1
+      args:
+        PHP_VERSION: php:${PHP81_VERSION}-fpm-alpine
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+        PHP_EXTENSIONS: ${PHP81_EXTENSIONS}
+        TZ: "$TZ"
+    container_name: php81
+    expose:
+      - 9501
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+      - ${PHP81_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP81_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP81_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+      - ${PHP81_LOG_DIR}/cron:/var/log/cron
+    extra_hosts: *hosts
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - default
+
 #  php80:
 #    build:
 #      context: ./services/php80
@@ -75,6 +127,45 @@ services:
 #      - SYS_PTRACE
 #    networks:
 #      - default
+
+  php72:
+    image: ${REPOSITORY}/php:${PHP72_VERSION}
+    container_name: php72
+    expose:
+      - 9501
+    extra_hosts:
+      - "esb-base.local.55haitao.com:10.0.0.10"
+      - "affiliate-source.local.55haitao.com:10.0.0.10"
+      - "esb-utils.local.55haitao.com:10.0.0.10"
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+      - ${PHP7_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP7_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP7_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - default
+
+  php71:
+    image: ${REPOSITORY}/php:${PHP71_VERSION}
+    container_name: php71
+    expose:
+      - 9501
+    extra_hosts: *hosts
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+      - ${PHP7_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP7_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP7_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - default
 
 #  php56:
 #    build:
