@@ -148,7 +148,7 @@ services:
   php83:
     image: ${REPOSITORY}/php:${PHP83_VERSION}
     build:
-      context: ./services/php/8.2
+      context: ./services/php/8.3
       args:
         PHP_VERSION: php:${PHP83_VERSION}-fpm-alpine
         CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
