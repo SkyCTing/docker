@@ -40,7 +40,7 @@ DNMP（Docker + Nginx/Openresty + MySQL5,8 + PHP5,7,8 + Redis + ElasticSearch + 
 13. 支持快速安装扩展命令 `install-php-extensions apcu`
 
 14. 支持安装certbot获取免费https用的SSL证书
-
+</details>
      [TOC]
 
 ## 1. 目录结构
@@ -104,8 +104,13 @@ $ cp docker-compose.sample.yml docker-compose.yml   # 复制 docker-compose 配�
                                                     # 除服务块前的注释
 $ docker-compose up -d                              # 启动
 ```
-
-5. 在浏览器中访问：`http://localhost`或`https://localhost就能看到效果，PHP代码在文件`./www/localhost/index.php`。
+5. 复制主机git文件,安装ssh
+```shell
+docker cp ~/.ssh php82:/root/
+apk add git
+apk add openssh-client
+```
+6. 在浏览器中访问：`http://localhost`或`https://localhost就能看到效果，PHP代码在文件`./www/localhost/index.php`。
 
 ## 3. PHP和扩展
 
