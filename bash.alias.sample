@@ -46,7 +46,7 @@ php54 () {
 }
 
 # php7 composer
-composer () {
+composer82 () {
     tty=
     tty -s && tty=--tty
     docker run \
@@ -57,7 +57,7 @@ composer () {
         --volume ~/SourceCode/docker/data/composer:/tmp/composer \
         --volume $(pwd):/app \
         --workdir /app \
-        dnmp_php composer "$@"
+        mcskyding/php:8.2.14 composer "$@"
 }
 
 # php5.6 composer
