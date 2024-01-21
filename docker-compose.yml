@@ -115,7 +115,6 @@ services:
         - ${PHP81_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
         - ${PHP81_LOG_DIR}:/var/log/php
         - ${DATA_DIR}/composer:/tmp/composer
-        - ${PHP81_LOG_DIR}/cron:/var/log/cron
       extra_hosts: *hosts
       restart: always
       cap_add:
@@ -134,7 +133,6 @@ services:
       - ${PHP82_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP82_LOG_DIR}:/var/log/php
       - ${DATA_DIR}/composer:/tmp/composer
-      - ${PHP82_LOG_DIR}/cron:/var/log/cron
     extra_hosts: *hosts
     restart: always
     cap_add:
@@ -153,7 +151,6 @@ services:
       - ${PHP83_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP83_LOG_DIR}:/var/log/php
       - ${DATA_DIR}/composer:/tmp/composer
-      - ${PHP83_LOG_DIR}/cron:/var/log/cron
     extra_hosts: *hosts
     restart: always
     cap_add:
