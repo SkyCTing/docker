@@ -497,6 +497,7 @@ curl  coupon.pianophile.cn
 2. 申请ssl证书
 
 ```shell
+docker-compose run --rm  certbot certonly --preferred-challenges dns -d *.salegains.com --cert-name salegains.com --manual
 docker-compose run --rm  certbot certonly --webroot --webroot-path /www/coupon/ -d coupon.pianophile.cn --cert-name coupon
 ```
 
