@@ -499,6 +499,8 @@ curl  coupon.pianophile.cn
 ```shell
 docker-compose run --rm  certbot certonly --preferred-challenges dns -d *.salegains.com --cert-name salegains.com --manual
 docker-compose run --rm  certbot certonly --webroot --webroot-path /www/coupon/ -d coupon.pianophile.cn --cert-name coupon
+certbot certificates
+certbot delete --cert-name example.com
 ```
 
 | 参数                  | 解释                                                         |
