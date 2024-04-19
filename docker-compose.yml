@@ -188,7 +188,8 @@ services:
     environment:
       TZ: "$TZ"
     networks:
-      - default
+      default:
+        ipv4_address: ${REDIS_IP}
       
   mysql5:
     image: mysql:${MYSQL5_VERSION}
