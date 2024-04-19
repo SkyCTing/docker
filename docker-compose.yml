@@ -95,7 +95,8 @@ services:
     environment:
       TZ: "$TZ"
     networks:
-      - default
+      default:
+        ipv4_address: ${REDIS_IP}
       
 networks:
   default:
