@@ -40,7 +40,7 @@ DNMP（Docker + Nginx/Openresty + MySQL5,8 + PHP5,7,8 + Redis + ElasticSearch + 
 13. 支持快速安装扩展命令 `install-php-extensions apcu`
 
 14. 支持安装certbot获取免费https用的SSL证书
-</details>
+    </details>
      [TOC]
 
 ## 1. 目录结构
@@ -497,7 +497,7 @@ curl  coupon.pianophile.cn
 2. 申请ssl证书
 
 ```shell
-docker-compose run --rm  certbot certonly --preferred-challenges dns -d *.salegains.com -d salegains.com --cert-name salegains.com --manual
+docker-compose run --rm  certbot certonly --preferred-challenges dns -d *.test.com -d test.com --cert-name test.com --manual
 docker-compose run --rm  certbot certonly --webroot --webroot-path /www/coupon/ -d coupon.pianophile.cn --cert-name coupon
 certbot certificates
 certbot delete --cert-name example.com
@@ -625,8 +625,12 @@ Redis连接信息如下：
 - port: `6379`
 
 
-## 7.在正式环境中安全使用
+## 12. 在正式环境中安全使用
 要在正式环境中使用，请：
 1. 在php.ini中关闭XDebug调试
 2. 增强MySQL数据库访问的安全策略
 3. 增强redis访问的安全策略
+
+## 13. 帮助
+
+1. git重置到第一次提交 git reset --soft $(git rev-list --max-parents=0 HEAD)
