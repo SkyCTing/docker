@@ -634,4 +634,4 @@ Redis连接信息如下：
 ## 13. 帮助
 
 1. git重置到第一次提交 git reset --soft $(git rev-list --max-parents=0 HEAD)
-1. 新建空白分支git checkout --orphan new-branch 
+2. 新建空白分支git checkout --orphan new-branch  && git rm -rf .
