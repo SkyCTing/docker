@@ -65,6 +65,23 @@ services:
     networks:
       - default
 
+  php71:
+    image: ${REPOSITORY}/php:${PHP71_VERSION}
+    container_name: php71
+    expose:
+      - 9501
+    volumes:
+      - ${SOURCE_DIR}:/www/:rw
+      - ${PHP7_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP7_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP7_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - default
+
   php72:
     image: ${REPOSITORY}/php:${PHP72_VERSION}
     container_name: php72
