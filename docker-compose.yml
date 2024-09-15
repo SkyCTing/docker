@@ -37,109 +37,6 @@ services:
       default:
         ipv4_address: ${NGINX_IP}
 
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ${SOURCE_DIR}:/www/:rw
-      - ./services/nginx/ssl/:/etc/letsencrypt/:rw
-    networks:
-      default:
-        ipv4_address: ${CERTBOT_IP}
-
-  php56:
-    image: ${REPOSITORY}/php:${PHP56_VERSION}
-    container_name: php56
-    expose:
-      - 9501
-    extra_hosts: *hosts
-    volumes:
-      - ${SOURCE_DIR}:/www/:rw
-      - ${PHP56_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-      - ${PHP56_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
-      - ${PHP56_LOG_DIR}:/var/log/php
-      - ${DATA_DIR}/composer:/tmp/composer
-    restart: always
-    cap_add:
-      - SYS_PTRACE
-    networks:
-      - default
-
-  php72:
-    image: ${REPOSITORY}/php:${PHP72_VERSION}
-    container_name: php72
-    expose:
-      - 9501
-    extra_hosts:
-      - "esb-base.local.55haitao.com:10.0.0.10"
-      - "affiliate-source.local.55haitao.com:10.0.0.10"
-      - "esb-utils.local.55haitao.com:10.0.0.10"
-    volumes:
-      - ${SOURCE_DIR}:/www/:rw
-      - ${PHP7_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-      - ${PHP7_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
-      - ${PHP7_LOG_DIR}:/var/log/php
-      - ${DATA_DIR}/composer:/tmp/composer
-    restart: always
-    cap_add:
-      - SYS_PTRACE
-    networks:
-      - default
-      
-  php74:
-    image: ${REPOSITORY}/php:${PHP74_VERSION}
-    container_name: php74
-    expose:
-      - 9501
-    extra_hosts: *hosts
-    volumes:
-      - ${SOURCE_DIR}:/www/:rw
-      - ${PHP7_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-      - ${PHP7_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
-      - ${PHP7_LOG_DIR}:/var/log/php
-      - ${DATA_DIR}/composer:/tmp/composer
-    restart: always
-    cap_add:
-      - SYS_PTRACE
-    networks:
-      - default
-
-  php81:
-      image: ${REPOSITORY}/php:${PHP81_VERSION}
-      container_name: php81
-      expose:
-        - 9501
-      volumes:
-        - ${SOURCE_DIR}:/www/:rw
-        - ${PHP81_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-        - ${PHP81_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
-        - ${PHP81_LOG_DIR}:/var/log/php
-        - ${DATA_DIR}/composer:/tmp/composer
-      extra_hosts: *hosts
-      restart: always
-      cap_add:
-        - SYS_PTRACE
-      networks:
-        - default
-
-  php82:
-    image: ${REPOSITORY}/php:${PHP82_VERSION}
-    container_name: php82
-    expose:
-      - 9501
-    volumes:
-      - ${SOURCE_DIR}:/www/:rw
-      - ${PHP82_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-      - ${PHP82_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
-      - ${PHP82_LOG_DIR}:/var/log/php
-      - ${DATA_DIR}/composer:/tmp/composer
-    extra_hosts: *hosts
-    restart: always
-    cap_add:
-      - SYS_PTRACE
-    networks:
-      - default
-
   php83:
     image: ${REPOSITORY}/php:${PHP83_VERSION}
     container_name: php83
@@ -158,23 +55,6 @@ services:
     networks:
       - default
 
-  mysql:
-    image: mysql:${MYSQL_VERSION}
-    container_name: mysql
-    ports:
-      - "${MYSQL_HOST_PORT}:3306"
-    volumes:
-      - ${MYSQL_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
-      - ${DATA_DIR}/mysql:/var/lib/mysql/:rw
-      - ${MYSQL_LOG_DIR}:/var/log/mysql/:rw
-    restart: always
-    networks:
-      - default
-    environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_ROOT_HOST: "${MYSQL_ROOT_HOST}"
-      TZ: "$TZ"
-
   redis:
     image: redis:${REDIS_VERSION}
     container_name: redis
@@ -190,23 +70,6 @@ services:
     networks:
       default:
         ipv4_address: ${REDIS_IP}
-      
-  mysql5:
-    image: mysql:${MYSQL5_VERSION}
-    container_name: mysql5
-    ports:
-      - "${MYSQL5_HOST_PORT}:3306"
-    volumes:
-      - ${MYSQL5_CONF_FILE}:/etc/mysql/conf.d/mysql.cnf:ro
-      - ${DATA_DIR}/mysql5:/var/lib/mysql/:rw
-      - ${MYSQL5_LOG_DIR}:/var/log/mysql/:rw
-    restart: always
-    networks:
-      - default
-    environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL5_ROOT_PASSWORD}"
-      MYSQL_ROOT_HOST: "${MYSQL5_ROOT_HOST}"
-      TZ: "$TZ"
 
 networks:
   default:
