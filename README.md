@@ -379,7 +379,7 @@ docker buildx build --no-cache \
 --build-arg PHP_VERSION=php:8.3.1-fpm-alpine \
 --build-arg CONTAINER_PACKAGE_URL=mirrors.ustc.edu.cn \
 --build-arg TZ=Asia/Shanghai \
---build-arg PHP_EXTENSIONS=pdo_mysql,mysqli,mbstring,gd,curl,opcache,zip,redis,soap,apcu,bcmath,dba,sockets,exif,pcntl,sodium,mongodb,xdebug,imap \
+--build-arg PHP_EXTENSIONS=pdo_mysql,mysqli,mbstring,gd,curl,opcache,zip,redis,soap,apcu,bcmath,dba,sockets,exif,pcntl,sodium,mongodb,xdebug,imap,msgpack \
 . --push
 ```
 
