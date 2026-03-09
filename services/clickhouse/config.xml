@@ -5,10 +5,40 @@
     </logger>
     
     <listen_host>0.0.0.0</listen_host>
+    <interserver_http_port>9010</interserver_http_port>
+
+    <!-- 资源限制核心优化 -->
+    <mark_cache_size>268435456</mark_cache_size>             <!-- 256MB (原默认~1.3GB) -->
+    <uncompressed_cache_size>268435456</uncompressed_cache_size> <!-- 256MB (原默认~1.3GB) -->
+    <max_server_memory_usage>2147483648</max_server_memory_usage> <!-- 2GB (原配置1.5GB/1GB) -->
     
-    <max_connections>4096</max_connections>
-    <keep_alive_timeout>3</keep_alive_timeout>
-    <max_concurrent_queries>100</max_concurrent_queries>
-    <uncompressed_cache_size>8589934592</uncompressed_cache_size>
-    <mark_cache_size>5368709120</mark_cache_size>
+    <!-- 线程池限制 -->
+    <background_schedule_pool_size>16</background_schedule_pool_size> <!-- 限制后台调度线程数 (原默认512) -->
+    <background_pool_size>4</background_pool_size>                    <!-- Merge线程池 -->
+    <background_move_pool_size>2</background_move_pool_size>          <!-- Move线程池 -->
+
+    <merge_tree>
+        <max_bytes_to_merge_at_max_space_in_pool>268435456</max_bytes_to_merge_at_max_space_in_pool>
+        <max_bytes_to_merge_at_min_space_in_pool>134217728</max_bytes_to_merge_at_min_space_in_pool>
+        <number_of_free_entries_in_pool_to_execute_mutation>1</number_of_free_entries_in_pool_to_execute_mutation>
+        
+        <!-- 配合 background_pool_size=4 的安全设置 -->
+        <number_of_free_entries_in_pool_to_lower_max_size_of_merge>1</number_of_free_entries_in_pool_to_lower_max_size_of_merge>
+        <number_of_free_entries_in_pool_to_execute_optimize_entire_partition>1</number_of_free_entries_in_pool_to_execute_optimize_entire_partition>
+    </merge_tree>
+
+    <!-- 禁用不需要的系统日志表，节省磁盘空间 -->
+    <trace_log remove="1"/>
+    <text_log remove="1"/>
+    <query_thread_log remove="1"/>
+    <query_log remove="1"/>
+    <query_views_log remove="1"/>
+    <metric_log remove="1"/>
+    <asynchronous_metric_log remove="1"/>
+    <opentelemetry_span_log remove="1"/>
+    <session_log remove="1"/>
+    <part_log remove="1"/>
+    <crash_log remove="1"/>
+    <processors_profile_log remove="1"/>
+
 </clickhouse>

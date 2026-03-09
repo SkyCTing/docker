@@ -238,8 +238,6 @@ services:
       - ./services/clickhouse/users.xml:/etc/clickhouse-server/users.d/custom_users.xml:ro
     environment:
       CLICKHOUSE_DB: default
-      CLICKHOUSE_USER: ${CLICKHOUSE_USER:-default}
-      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-iuXJEMba3CD9hAWvBcUG}
       TZ: "$TZ"
     restart: always
     networks:
