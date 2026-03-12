@@ -10,9 +10,8 @@
     <!-- 资源限制 - 本地开发环境，数据量小，尽量省内存 -->
     <mark_cache_size>134217728</mark_cache_size>                 <!-- 128MB (默认5GB) -->
     <uncompressed_cache_size>0</uncompressed_cache_size>         <!-- 禁用，数据量小不需要 -->
-    <max_server_memory_usage>1073741824</max_server_memory_usage> <!-- 1GB -->
-    <max_thread_pool_size>100</max_thread_pool_size>             <!-- 默认10000 -->
-    <mlock_executable>false</mlock_executable>                   <!-- 不锁定二进制到内存，省几百MB -->
+    <max_server_memory_usage>0</max_server_memory_usage> <!-- 0=自动 -->
+    <mlock_executable>false</mlock_executable>
     
     <!-- 线程池限制 -->
     <background_schedule_pool_size>4</background_schedule_pool_size>
@@ -42,5 +41,17 @@
     <part_log remove="1"/>
     <crash_log remove="1"/>
     <processors_profile_log remove="1"/>
+    <background_schedule_pool_log remove="1"/>
+    <error_log remove="1"/>
+    <query_metric_log remove="1"/>
+    <asynchronous_insert_log remove="1"/>
+    <backup_log remove="1"/>
+    <s3queue_log remove="1"/>
+    <blob_storage_log remove="1"/>
+    <aggregated_zookeeper_log remove="1"/>
+    <zookeeper_connection_log remove="1"/>
+    <instrumentation_trace_log remove="1"/>
+    <iceberg_metadata_log remove="1"/>
+    <delta_lake_metadata_log remove="1"/>
 
 </clickhouse>
