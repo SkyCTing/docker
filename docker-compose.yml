@@ -226,6 +226,22 @@ services:
       MYSQL_ROOT_HOST: "${MYSQL5_ROOT_HOST}"
       TZ: "$TZ"
 
+  postgresql:
+    image: postgres:18
+    container_name: postgresql
+    ports:
+      - "${POSTGRESQL_HOST_PORT}:5432"
+    volumes:
+      - ${DATA_DIR}/postgresql:/var/lib/postgresql:rw
+    restart: always
+    environment:
+      POSTGRES_USER: "${POSTGRESQL_USER}"
+      POSTGRES_PASSWORD: "${POSTGRESQL_PASSWORD}"
+      POSTGRES_DB: "${POSTGRESQL_DB}"
+      TZ: "$TZ"
+    networks:
+      - default
+
   clickhouse:
     image: clickhouse/clickhouse-server:latest
     container_name: clickhouse
