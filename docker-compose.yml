@@ -1,17 +1,6 @@
-version: "3"
-
 #/etc/hosts
 x-hosts: &hosts
   - store.local.55haitao.com:${NGINX_IP}
-  - maxrebates.local.55haitao.com:${NGINX_IP}
-  - affiliate-source.local.55haitao.com:${NGINX_IP}
-  - gocashback.local.55haitao.com:${NGINX_IP}
-  - esb-user.local.55haitao.com:${NGINX_IP}
-  - esb-base.local.55haitao.com:${NGINX_IP}
-  - esb-utils.local.55haitao.com:${NGINX_IP}
-  - hub.local.55haitao.com:${NGINX_IP}
-  - esb-api.local.55haitao.com:${NGINX_IP}
-  - esb-medium.local.55haitao.com:${NGINX_IP}
 
 services:
   nginx:

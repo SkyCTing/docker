@@ -631,7 +631,44 @@ Redis连接信息如下：
 2. 增强MySQL数据库访问的安全策略
 3. 增强redis访问的安全策略
 
-## 13. 帮助
+## 13. 本地 HTTPS 证书（mkcert）
+
+本地开发使用 [mkcert](https://github.com/FiloSottile/mkcert) 生成受浏览器信任的自签名证书，无需每次点击忽略警告。
+
+### 13.1 安装并初始化
+
+```bash
+brew install mkcert
+mkcert -install   # 将 mkcert CA 写入系统信任链，只需执行一次
+```
+
+### 13.2 生成证书
+
+```bash
+cd services/nginx/ssl
+mkcert "*.test.com" "test.com"
+```
+
+生成的文件：
+- `_wildcard.test.com+1.pem` — 证书
+- `_wildcard.test.com+1-key.pem` — 私钥
+
+### 13.3 在 nginx 配置中引用
+
+```nginx
+ssl_certificate     /etc/nginx/ssl/_wildcard.test.com+1.pem;
+ssl_certificate_key /etc/nginx/ssl/_wildcard.test.com+1-key.pem;
+```
+
+### 13.4 重载 nginx
+
+```bash
+docker compose exec nginx nginx -s reload
+```
+
+> 证书只对当前 Mac 有效。换机器后需重新执行 `mkcert -install` 和生成步骤。
+
+## 14. 帮助
 
 1. git重置到第一次提交 git reset --soft $(git rev-list --max-parents=0 HEAD)
 2. 新建空白分支git checkout --orphan new-branch  && git rm -rf .
