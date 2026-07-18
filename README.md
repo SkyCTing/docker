@@ -409,6 +409,24 @@ docker exec -it postgresql psql -U "$POSTGRESQL_USER" -d "$POSTGRESQL_DB" \
 > ```
 > 升级 pg_partman 或修改 Dockerfile 后，需重新 `docker compose build postgresql`（`up` 默认不重建已有镜像，可加 `--build`）。
 
+### 5.2 localhost HTTPS 自动证书
+
+nginx 的 HTTPS（`https://localhost`）使用 [mkcert](https://github.com/FiloSottile/mkcert) 签发的本地 CA 证书，浏览器无安全警告。
+
+`nginx-cert-init` 一次性服务会在每次 `docker compose up` 时检查 localhost 证书是否存在，缺失则用宿主机的 mkcert CA 自动签发；nginx 通过 `depends_on: service_completed_successfully` 等证书就绪后再启动。
+
+**首次使用前（每台机器一次）**：在宿主机安装并信任 mkcert CA：
+
+```shell
+brew install mkcert          # 或见 mkcert 官方安装方式
+mkcert -install              # 把 CA 装入系统/浏览器信任库
+mkcert -CAROOT               # 输出 CA 目录路径，填进 .env 的 MKCERT_CAROOT
+```
+
+之后正常 `docker compose up -d` 即可，证书会自动生成/复用，无需手动维护。
+
+> 新机器上若没先 `mkcert -install`，`nginx-cert-init` 会因找不到 `rootCA.pem` 而退出非 0，nginx 不会启动——按上面命令装一次 CA 即可。
+
 ## 6. 远端镜像
 
 阿里云镜像：https://cr.console.aliyun.com/cn-hangzhou/instance/repositories

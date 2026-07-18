@@ -3,6 +3,9 @@ services:
   nginx:
     image: nginx:${NGINX_VERSION}
     container_name: nginx
+    depends_on:
+      nginx-cert-init:
+        condition: service_completed_successfully
     ports:
       - "${NGINX_HTTP_HOST_PORT}:80"
       - "${NGINX_HTTPS_HOST_PORT}:443"
@@ -22,6 +25,23 @@ services:
       # 可以把-default 改成下列配置，以固定容器IP
       #default:
       #  ipv4_address: 10.0.0.10
+
+  nginx-cert-init:
+    # 一次性任务：启动时若 localhost 证书缺失，用 host 的 mkcert CA 签发（浏览器信任）。
+    # nginx depends_on 本服务 service_completed_successfully，证书就绪后 nginx 才起。
+    build: ./services/nginx/cert-init
+    container_name: nginx-cert-init
+    environment:
+      CAROOT: /ca
+      SSL_DIR: /ssl
+      CERT_NAME: localhost
+      CERT_DOMAINS: "*.localhost.com localhost.com *.test.com test.com"
+    volumes:
+      - "${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw"
+      - "${MKCERT_CAROOT}:/ca:ro"
+    restart: "no"
+    networks:
+      - default
 
   php:
     build:
