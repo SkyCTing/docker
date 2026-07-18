@@ -61,6 +61,7 @@ DNMP（Docker + Nginx/Openresty + MySQL5,8 + PHP5,7,8 + Redis + ElasticSearch + 
 │   ├── nginx                   Nginx 配置文件目录
 │   ├── php                     PHP5.6 - PHP7.4 配置目录
 │   ├── php54                   PHP5.4 配置目录
+│   ├── postgresql             PostgreSQL 自定义镜像目录（含 pg_partman 扩展）
 │   └── redis                   Redis 配置目录
 ├── logs                        日志目录
 ├── docker-compose.sample.yml   Docker 服务配置示例文件
@@ -383,6 +384,31 @@ docker buildx build --no-cache \
 . --push
 ```
 
+### 5.1 PostgreSQL + pg_partman
+
+PostgreSQL 服务使用自定义镜像（`services/postgresql/Dockerfile`），基于官方 `postgres` 镜像并预装 [pg_partman](https://github.com/pgpartman/pg_partman) 分区管理扩展。首次启动会自动在 `partman` schema 下创建扩展（`services/postgresql/init/00-create-pg-partman.sql`）。
+
+构建并启动：
+
+```shell
+docker compose build postgresql
+docker compose up -d postgresql
+```
+
+验证：
+
+```shell
+docker exec -it postgresql psql -U "$POSTGRESQL_USER" -d "$POSTGRESQL_DB" \
+  -c "SELECT extname, extversion FROM pg_extension WHERE extname='pg_partman';"
+```
+
+> **注意**：init 脚本仅在数据目录为空（首次启动）时执行。若 `data/postgresql` 已有数据，需手动进库执行：
+> ```sql
+> CREATE SCHEMA IF NOT EXISTS partman;
+> CREATE EXTENSION pg_partman SCHEMA partman;
+> ```
+> 升级 pg_partman 或修改 Dockerfile 后，需重新 `docker compose build postgresql`（`up` 默认不重建已有镜像，可加 `--build`）。
+
 ## 6. 远端镜像
 
 阿里云镜像：https://cr.console.aliyun.com/cn-hangzhou/instance/repositories
@@ -418,7 +444,7 @@ $ docker-compose stop php                   # 停止服务
 $ docker-compose restart php                # 重启服务
 $ docker-compose down --rmi all							# 停止并删除
 $ docker-compose build php                  # 构建或者重新构建服务
-$ docker-compose up -d --build php nginx 		# 修改dockerfile或者env文件之后rebuild可生效
+$ docker-compose up -d --build php 		# 修改dockerfile或者env文件之后rebuild可生效
 $ docker-compose rm php                     # 删除并且停止php容器
 $ docker-compose down                       # 停止并删除容器，网络，图像和挂载卷
 

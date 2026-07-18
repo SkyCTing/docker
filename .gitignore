@@ -3,3 +3,7 @@
 .env
 nohup.out
 logs/*
+
+# nginx conf.d：只托管 localhost.conf 作为示例，其余业务 vhost 留在本地不入库
+services/nginx/conf.d/*
+!services/nginx/conf.d/localhost.conf
