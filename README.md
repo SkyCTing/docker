@@ -375,12 +375,12 @@ docker buildx create --use --name=sky
 docker buildx inspect --bootstrap sky
 
 docker buildx build --no-cache \
--t mcskyding/php:8.3.1 \
+-t mcskyding/php:8.3.11 \
 --platform linux/arm64,linux/amd64,linux/amd64/v2,linux/riscv64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
 --build-arg PHP_VERSION=php:8.3.1-fpm-alpine \
 --build-arg CONTAINER_PACKAGE_URL=mirrors.ustc.edu.cn \
 --build-arg TZ=Asia/Shanghai \
---build-arg PHP_EXTENSIONS=pdo_mysql,mysqli,mbstring,gd,curl,opcache,zip,redis,soap,apcu,bcmath,dba,sockets,exif,pcntl,sodium,mongodb,xdebug,imap,msgpack \
+--build-arg PHP_EXTENSIONS=pdo_mysql,mysqli,mbstring,gd,curl,opcache,zip,redis,soap,apcu,bcmath,dba,sockets,exif,pcntl,sodium,mongodb,xdebug,imap,msgpack,grpc \
 . --push
 ```
 
